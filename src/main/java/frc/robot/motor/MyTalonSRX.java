@@ -113,7 +113,6 @@ public class MyTalonSRX extends WPI_TalonSRX {
 
 
     public void setupCurrentLimiting(int currentLimit, int currentLimitThreshold, int limitTimeout) {
-
         this.configContinuousCurrentLimit(currentLimit, 0);
         this.configPeakCurrentLimit(currentLimitThreshold, 0);
         this.configPeakCurrentDuration(limitTimeout, 0);
