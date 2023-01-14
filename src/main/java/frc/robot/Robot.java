@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -28,6 +29,8 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+
+    CommandScheduler.getInstance().setDefaultCommand(m_robotContainer.drive, m_robotContainer.tankTeleop);
   }
 
   /**
@@ -77,16 +80,24 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+
+    m_robotContainer.drive.brake();
   }
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    SmartDashboard.putNumber("Speed of LeftFront: ", m_robotContainer.leftFront.getSpeed());
+    SmartDashboard.putNumber("Speed of LeftRear: ", m_robotContainer.leftRear.getSpeed());
+    SmartDashboard.putNumber("Speed of RightFront: ", m_robotContainer.rightFront.getSpeed());
+    SmartDashboard.putNumber("Speed of RightRear: ", m_robotContainer.rightRear.getSpeed());
+  }
 
   @Override
   public void testInit() {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
+    m_robotContainer.drive.coast();
   }
 
   /** This function is called periodically during test mode. */

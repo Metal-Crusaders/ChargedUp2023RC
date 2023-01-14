@@ -14,11 +14,11 @@ public class MySparkMax extends CANSparkMax  {
      */
 
     public MySparkMax(int deviceId, boolean brushless) {
-        super(deviceId, (brushless) ? MotorType.kBrushless : MotorType.kBrushed);
+        super(deviceId, ((brushless) ? MotorType.kBrushless : MotorType.kBrushed));
     }
 
     public MySparkMax(int deviceId, boolean brushless, boolean inverted) {
-        super(deviceId, (brushless) ? MotorType.kBrushless : MotorType.kBrushed);
+        super(deviceId, ((brushless) ? MotorType.kBrushless : MotorType.kBrushed));
         this.setInverted(inverted);
         this.getEncoder().setInverted(inverted);
     }

@@ -17,6 +17,7 @@ public class RawTankTeleop extends CommandBase {
 
     private final double DEADBAND = 0.12;
 
+    // TODO INVERSE DRIVE (1/X) implementation
     public RawTankTeleop(TankDrive driveTrain, DoubleSupplier leftInput, DoubleSupplier rightInput, DoubleSupplier steeringInput) {
 
         this.driveTrain = driveTrain;
@@ -39,11 +40,12 @@ public class RawTankTeleop extends CommandBase {
         if (steering > -DEADBAND && steering < DEADBAND) {
             steering = 0;
         }
-        double throttle = rightInput.getAsDouble() - leftInput.getAsDouble();
-        double rpower =  throttle * (1 + steering);
-        double lpower = throttle * (1 - steering);
 
-        driveTrain.set(lpower*speedSensitivity, rpower*speedSensitivity);
+        double throttle = rightInput.getAsDouble() - leftInput.getAsDouble();
+        double rpower = throttle * (1 + steering) * speedSensitivity;
+        double lpower = throttle * (1 - steering) * speedSensitivity;
+
+        driveTrain.set(lpower, rpower);
         SmartDashboard.putNumber("steering", steering);
         SmartDashboard.putNumber("throttle", rightInput.getAsDouble() - leftInput.getAsDouble());
     }
