@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.tankdrive.RawTankTeleop;
 import frc.robot.motor.MySparkMax;
@@ -13,6 +15,9 @@ public class RobotContainer {
 
   // Motors
   public MySparkMax leftFront, leftRear, rightFront, rightRear;
+
+  // Sensors
+  public AHRS gyro;
 
   // Subsystems
   public TankDrive drive;
@@ -35,8 +40,11 @@ public class RobotContainer {
     leftRear.follow(leftFront);
     rightRear.follow(rightFront);
 
+    // Sensors
+    gyro = new AHRS(SPI.Port.kMXP); // TODO Change this
+
     // Subsystems
-    drive = new TankDrive(leftFront, rightFront);
+    drive = new TankDrive(leftFront, rightFront, gyro);
 
     // OI + Buttons
     oi = new OI();

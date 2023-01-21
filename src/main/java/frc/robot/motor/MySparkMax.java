@@ -83,7 +83,7 @@ public class MySparkMax extends CANSparkMax  {
         this.getEncoder().setPosition(0);
     }
 
-    public double numRotations() {
+    public double getDistance() {
         return this.getEncoder().getPosition();
     }
 

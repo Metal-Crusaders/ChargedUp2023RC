@@ -12,7 +12,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 public class MyTalonSRX extends WPI_TalonSRX {
 
     private static final double DEFAULT_PERCENT_FILTER = 1.0;
-    private Encoder encoder;
+    private TalonEncoder encoder;
     private static final int TIMEOUT_MS = 30;
 
     private MyTalonSRX brownoutFollower = null;
@@ -25,7 +25,7 @@ public class MyTalonSRX extends WPI_TalonSRX {
         percentOutputFilter = new Filter(DEFAULT_PERCENT_FILTER);
     }
 
-    public MyTalonSRX(int channel, boolean reversed, Encoder encoder) {
+    public MyTalonSRX(int channel, boolean reversed, TalonEncoder encoder) {
         super(channel);
         super.setInverted(reversed);
 
@@ -63,11 +63,11 @@ public class MyTalonSRX extends WPI_TalonSRX {
         return !(encoder == null);
     }
 
-    public Encoder getEncoder() {
+    public TalonEncoder getEncoder() {
         return encoder;
     }
 
-    public void setEncoder(Encoder encoder) {
+    public void setEncoder(TalonEncoder encoder) {
         this.encoder = encoder;
     }
 

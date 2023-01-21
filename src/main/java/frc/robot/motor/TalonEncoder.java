@@ -8,13 +8,13 @@ import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
  * Encoder class. Used to measure how far the robot traveled
  */
 
-public class Encoder {
+public class TalonEncoder {
 
     private BaseMotorController talonSRX;
     public double PULSES_PER_ROTATION = 2048;
     private double inchesPerPulse; // configure
 
-    public Encoder(BaseMotorController talonSRX, double inchesPerPulse, boolean reversed) {
+    public TalonEncoder(BaseMotorController talonSRX, double inchesPerPulse, boolean reversed) {
         this.talonSRX = talonSRX;
         this.inchesPerPulse = inchesPerPulse;
         // this.talonSRX.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
@@ -22,7 +22,7 @@ public class Encoder {
         talonSRX.setSensorPhase(reversed);
     }
 
-    public Encoder(BaseMotorController talonSRX, double inchesPerPulse, boolean reversed, double PULSES_PER_ROTATION) {
+    public TalonEncoder(BaseMotorController talonSRX, double inchesPerPulse, boolean reversed, double PULSES_PER_ROTATION) {
         this.talonSRX = talonSRX;
         this.inchesPerPulse = inchesPerPulse;
         // this.talonSRX.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
