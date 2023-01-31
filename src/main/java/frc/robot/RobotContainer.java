@@ -9,12 +9,14 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.tankdrive.RawTankTeleop;
 import frc.robot.motor.MySparkMax;
+import frc.robot.motor.MyVictorSPX;
 import frc.robot.subsystems.TankDrive;
 
 public class RobotContainer {
 
   // Motors
   public MySparkMax leftFront, leftRear, rightFront, rightRear;
+  public MyVictorSPX leftPivot, rightPivot, extender;
 
   // Sensors
   public AHRS gyro;
@@ -32,19 +34,19 @@ public class RobotContainer {
   public RobotContainer() {
 
     // Motors
-    leftFront = new MySparkMax(RobotMap.LEFT_FRONT, true, RobotMap.LEFT_INVERTED);
-    leftRear = new MySparkMax(RobotMap.LEFT_REAR, true, RobotMap.LEFT_INVERTED);
-    rightFront = new MySparkMax(RobotMap.RIGHT_FRONT, true, !RobotMap.LEFT_INVERTED);
-    rightRear = new MySparkMax(RobotMap.RIGHT_REAR, true, !RobotMap.LEFT_INVERTED);
+    leftFront = new MySparkMax(RobotMap.LEFT_FRONT, true, RobotMap.LEFT_DT_INVERTED);
+    leftRear = new MySparkMax(RobotMap.LEFT_REAR, true, RobotMap.LEFT_DT_INVERTED);
+    rightFront = new MySparkMax(RobotMap.RIGHT_FRONT, true, !RobotMap.LEFT_DT_INVERTED);
+    rightRear = new MySparkMax(RobotMap.RIGHT_REAR, true, !RobotMap.LEFT_DT_INVERTED);
 
     leftRear.follow(leftFront);
     rightRear.follow(rightFront);
 
     // Sensors
-    gyro = new AHRS(SPI.Port.kMXP); // TODO Change this
+//    gyro = new AHRS(SPI.Port.kMXP); // TODO Change this
 
     // Subsystems
-    drive = new TankDrive(leftFront, rightFront, gyro);
+    drive = new TankDrive(leftFront, rightFront);
 
     // OI + Buttons
     oi = new OI();

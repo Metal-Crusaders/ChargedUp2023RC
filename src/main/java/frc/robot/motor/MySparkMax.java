@@ -20,7 +20,6 @@ public class MySparkMax extends CANSparkMax  {
     public MySparkMax(int deviceId, boolean brushless, boolean inverted) {
         super(deviceId, ((brushless) ? MotorType.kBrushless : MotorType.kBrushed));
         this.setInverted(inverted);
-        this.getEncoder().setInverted(inverted);
     }
 
     public MySparkMax getMotor() {
@@ -61,7 +60,7 @@ public class MySparkMax extends CANSparkMax  {
     }
 
     public void follow(MySparkMax parent) {
-        super.follow(parent, parent.getInverted());
+        super.follow(parent);
     }
 
     // encoder stuff

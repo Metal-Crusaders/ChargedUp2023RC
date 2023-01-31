@@ -8,7 +8,6 @@ import java.util.function.DoubleSupplier;
 
 public class RawTankTeleop extends CommandBase {
 
-
     private boolean filterEnabled;
 
     private DoubleSupplier leftInput, rightInput, steeringInput;
@@ -17,7 +16,6 @@ public class RawTankTeleop extends CommandBase {
 
     private final double DEADBAND = 0.12;
 
-    // TODO INVERSE DRIVE (1/X) implementation
     public RawTankTeleop(TankDrive driveTrain, DoubleSupplier leftInput, DoubleSupplier rightInput, DoubleSupplier steeringInput) {
 
         this.driveTrain = driveTrain;
@@ -35,6 +33,7 @@ public class RawTankTeleop extends CommandBase {
     @Override
     public void execute() {
         double speedSensitivity = 1;
+        double speedPower = 2;
 
         double steering = steeringInput.getAsDouble();
         if (steering > -DEADBAND && steering < DEADBAND) {
@@ -42,10 +41,12 @@ public class RawTankTeleop extends CommandBase {
         }
 
         double throttle = rightInput.getAsDouble() - leftInput.getAsDouble();
-        double rpower = throttle * (1 + steering) * speedSensitivity;
-        double lpower = throttle * (1 - steering) * speedSensitivity;
+        double rightSign = (((throttle - steering) * speedSensitivity) == 0) ? 0 : ((throttle - steering) * speedSensitivity) / Math.abs((throttle - steering) * speedSensitivity);
+        double leftSign = (((throttle + steering) * speedSensitivity) == 0) ? 0 :((throttle + steering) * speedSensitivity) / Math.abs((throttle + steering) * speedSensitivity);
+        double rpower = rightSign * Math.pow((throttle - steering) * speedSensitivity, speedPower);
+        double lpower = leftSign * Math.pow((throttle + steering) * speedSensitivity, speedPower);
 
-        driveTrain.set(lpower, rpower);
+        driveTrain.set(rpower, lpower);
         SmartDashboard.putNumber("steering", steering);
         SmartDashboard.putNumber("throttle", rightInput.getAsDouble() - leftInput.getAsDouble());
     }

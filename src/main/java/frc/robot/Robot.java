@@ -91,6 +91,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Speed of LeftRear: ", m_robotContainer.leftRear.getSpeed());
     SmartDashboard.putNumber("Speed of RightFront: ", m_robotContainer.rightFront.getSpeed());
     SmartDashboard.putNumber("Speed of RightRear: ", m_robotContainer.rightRear.getSpeed());
+    SmartDashboard.putBoolean("Is Right Front (2) Inverted: ", m_robotContainer.rightFront.getInverted());
+    SmartDashboard.putBoolean("Is Right Rear (3) Inverted: ", m_robotContainer.rightRear.getInverted());
   }
 
   @Override

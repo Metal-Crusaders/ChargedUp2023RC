@@ -10,13 +10,15 @@ public final class RobotMap {
     public static final int DRIVER_ID = 0;
     public static final int OPERATOR_ID = 1;
 
-    // DRIVETRAIN
+    // CAN STUFF
     public static final int LEFT_FRONT = 1;
-    public static final int LEFT_REAR = 2;
-    public static final int RIGHT_FRONT = 3;
-    public static final int RIGHT_REAR = 4;
+    public static final int RIGHT_FRONT = 2;
+    public static final int LEFT_REAR = 4;
+    public static final int RIGHT_REAR = 3;
+    public static final int LEFT_PIVOT = 5;
+    public static final int RIGHT_PIVOT = 6;
 
-    public static final boolean LEFT_INVERTED = true;
+    public static final boolean LEFT_DT_INVERTED = false;
 
 
 }
