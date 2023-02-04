@@ -15,11 +15,13 @@ public class MySparkMax extends CANSparkMax  {
 
     public MySparkMax(int deviceId, boolean brushless) {
         super(deviceId, ((brushless) ? MotorType.kBrushless : MotorType.kBrushed));
+        this.setEncoderPositionConstant(420);
     }
 
     public MySparkMax(int deviceId, boolean brushless, boolean inverted) {
         super(deviceId, ((brushless) ? MotorType.kBrushless : MotorType.kBrushed));
         this.setInverted(inverted);
+        this.setEncoderPositionConstant(420);
     }
 
     public MySparkMax getMotor() {
@@ -73,8 +75,11 @@ public class MySparkMax extends CANSparkMax  {
         return super.getEncoder(encoderType, countsPerRev);
     }
 
-    public void setEncoderSettings(double positionConstant, double velocityConstant) {
+    public void setEncoderPositionConstant(double positionConstant) {
         this.getEncoder().setPositionConversionFactor(positionConstant);
+    }
+
+    public void setEncoderVelocityConstant(double velocityConstant) {
         this.getEncoder().setVelocityConversionFactor(velocityConstant);
     }
 

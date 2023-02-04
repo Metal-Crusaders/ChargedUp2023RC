@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -20,6 +21,10 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
+  private Timer timer;
+
+  boolean pathScheduled = false;
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -29,6 +34,8 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+
+    timer = new Timer();
 
     CommandScheduler.getInstance().setDefaultCommand(m_robotContainer.drive, m_robotContainer.tankTeleop);
   }
@@ -51,7 +58,10 @@ public class Robot extends TimedRobot {
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    m_robotContainer.drive.resetEncoders();
+    m_robotContainer.drive.coast();
+  }
 
   @Override
   public void disabledPeriodic() {}
@@ -59,17 +69,38 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
+    m_robotContainer.drive.resetEncoders();
+    m_robotContainer.drive.brake();
+
+    timer.reset();
+    timer.start();
+
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
+      pathScheduled = true;
     }
   }
 
   /** This function is called periodically during autonomous. */
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+
+    CommandScheduler.getInstance().run();
+
+    if (timer.hasElapsed(0.1) && !pathScheduled){
+      m_autonomousCommand.schedule();
+      pathScheduled = true;
+    }
+
+    if (m_autonomousCommand.isFinished()) {
+      m_autonomousCommand.end(true);
+      disabledInit();
+    }
+
+  }
 
   @Override
   public void teleopInit() {

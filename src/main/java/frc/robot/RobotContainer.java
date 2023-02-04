@@ -6,7 +6,12 @@ package frc.robot;
 
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.autonomous.DriveStraightAuto;
+import frc.robot.commands.autonomous.ForwardBackward;
 import frc.robot.commands.tankdrive.RawTankTeleop;
 import frc.robot.motor.MySparkMax;
 import frc.robot.motor.MyVictorSPX;
@@ -30,6 +35,12 @@ public class RobotContainer {
   // Commands
   public RawTankTeleop tankTeleop;
 
+  // Auto Commands
+  public DriveStraightAuto driveStraightAuto;
+  public ForwardBackward forwardBackward;
+
+  SendableChooser<Command> chooser;
+
 
   public RobotContainer() {
 
@@ -43,16 +54,26 @@ public class RobotContainer {
     rightRear.follow(rightFront);
 
     // Sensors
-//    gyro = new AHRS(SPI.Port.kMXP); // TODO Change this
+    gyro = new AHRS(SPI.Port.kMXP);
 
     // Subsystems
-    drive = new TankDrive(leftFront, rightFront);
+    drive = new TankDrive(leftFront, rightFront, gyro);
 
     // OI + Buttons
     oi = new OI();
 
     // Commands
     tankTeleop = new RawTankTeleop(drive, oi::getDriverXboxLeftTrigger, oi::getDriverXboxRightTrigger, oi::getDriverXboxLeftX);
+
+    // Auto Commands
+    driveStraightAuto = new DriveStraightAuto(drive, -26);
+    forwardBackward = new ForwardBackward(drive, 26, 26);
+
+    // Sendable Chooser:
+    chooser = new SendableChooser<>();
+    chooser.addOption("Drive Test Auto", driveStraightAuto);
+    chooser.addOption("Forward-Backward Test", forwardBackward);
+    SmartDashboard.putData(chooser);
 
     configureButtonBindings();
   }
@@ -61,6 +82,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return null;
+    return chooser.getSelected();
   }
 }
