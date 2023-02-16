@@ -27,7 +27,8 @@ public class TankDrive extends SubsystemBase {
         this.right = right;
         this.gyro = gyro;
 
-//        resetEncoders();
+        resetEncoders();
+        gyro.reset();
 
         // PID Stuff
         this.drivePID = new PIDController(0, 0, 0);
@@ -80,6 +81,14 @@ public class TankDrive extends SubsystemBase {
         return gyro;
     }
 
+    public double getYaw() {
+        return gyro.getRotation2d().getDegrees();
+    }
+
+    public void resetGyro() {
+        gyro.reset();
+    }
+
     public void resetEncoders() {
         left.resetEncoder();
         right.resetEncoder();
@@ -107,14 +116,10 @@ public class TankDrive extends SubsystemBase {
                 -getRightDistance() * DRIVETRAIN_INCHES_PER_PULSE * 0.0254
         );
 
-		SmartDashboard.putNumber("NavX Gryo Angle (deg)", gyro.getRotation2d().getDegrees());
+		SmartDashboard.putNumber("NavX Gyro Angle (deg)", getYaw());
 		SmartDashboard.putNumber("Odometry X (m)", odometry.getPoseMeters().getX());
 		SmartDashboard.putNumber("Odometry Y (m)", odometry.getPoseMeters().getY());
         SmartDashboard.putNumber("Average Encoder Distance", getAverageEncoderDistance());
-    }
-
-    public Pose2d getPose(){
-        return odometry.getPoseMeters();
     }
 
     public DifferentialDriveWheelSpeeds getWheelSpeeds(){

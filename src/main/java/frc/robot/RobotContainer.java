@@ -9,35 +9,34 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.autonomous.DriveStraightAuto;
-import frc.robot.commands.autonomous.ForwardBackward;
 import frc.robot.commands.tankdrive.RawTankTeleop;
+import frc.robot.commands.pivot.RawPivotTeleop;
 import frc.robot.motor.MySparkMax;
 import frc.robot.motor.MyVictorSPX;
 import frc.robot.subsystems.TankDrive;
+import frc.robot.subsystems.Pivot;
 
 public class RobotContainer {
 
   // Motors
   public MySparkMax leftFront, leftRear, rightFront, rightRear;
-  public MyVictorSPX leftPivot, rightPivot, extender;
+  public MySparkMax leftPivot, rightPivot;
 
   // Sensors
   public AHRS gyro;
 
   // Subsystems
   public TankDrive drive;
+  public Pivot pivot;
 
   // OI + Buttons
   public OI oi;
 
   // Commands
   public RawTankTeleop tankTeleop;
+  public RawPivotTeleop pivotTeleop;
 
   // Auto Commands
-  public DriveStraightAuto driveStraightAuto;
-  public ForwardBackward forwardBackward;
 
   SendableChooser<Command> chooser;
 
@@ -53,26 +52,29 @@ public class RobotContainer {
     leftRear.follow(leftFront);
     rightRear.follow(rightFront);
 
+    leftPivot = new MySparkMax(RobotMap.LEFT_PIVOT, true, RobotMap.LEFT_PIV_INVERTED);
+    rightPivot = new MySparkMax(RobotMap.RIGHT_PIVOT, true, !RobotMap.LEFT_PIV_INVERTED);
+
+    rightPivot.follow(leftPivot, !RobotMap.LEFT_PIV_INVERTED);
+
     // Sensors
     gyro = new AHRS(SPI.Port.kMXP);
 
     // Subsystems
     drive = new TankDrive(leftFront, rightFront, gyro);
+    pivot = new Pivot(leftPivot);
 
     // OI + Buttons
     oi = new OI();
 
     // Commands
     tankTeleop = new RawTankTeleop(drive, oi::getDriverXboxLeftTrigger, oi::getDriverXboxRightTrigger, oi::getDriverXboxLeftX);
+    pivotTeleop = new RawPivotTeleop(pivot, oi::getOperatorXboxLeftY);
 
     // Auto Commands
-    driveStraightAuto = new DriveStraightAuto(drive, -26);
-    forwardBackward = new ForwardBackward(drive, 26, 26);
 
     // Sendable Chooser:
     chooser = new SendableChooser<>();
-    chooser.addOption("Drive Test Auto", driveStraightAuto);
-    chooser.addOption("Forward-Backward Test", forwardBackward);
     SmartDashboard.putData(chooser);
 
     configureButtonBindings();

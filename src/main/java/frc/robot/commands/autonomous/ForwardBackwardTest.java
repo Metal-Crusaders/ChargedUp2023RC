@@ -3,7 +3,7 @@ package frc.robot.commands.autonomous;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.TankDrive;
 
-public class ForwardBackward extends SequentialCommandGroup {
+public class ForwardBackwardTest extends SequentialCommandGroup {
 
     private final TankDrive drive;
 
@@ -11,7 +11,7 @@ public class ForwardBackward extends SequentialCommandGroup {
 
     private DriveStraightAuto driveForward, driveBackward;
 
-    public ForwardBackward(TankDrive drive, double targetForwards, double targetBackwards) {
+    public ForwardBackwardTest(TankDrive drive, double targetForwards, double targetBackwards) {
         super();
         this.drive = drive;
         this.targetF = targetForwards;

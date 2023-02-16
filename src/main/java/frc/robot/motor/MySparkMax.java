@@ -3,6 +3,7 @@ package frc.robot.motor;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxRelativeEncoder;
+import frc.robot.subsystems.TankDrive;
 
 public class MySparkMax extends CANSparkMax  {
 
@@ -91,8 +92,8 @@ public class MySparkMax extends CANSparkMax  {
         return this.getEncoder().getPosition();
     }
 
-    public double getSpeed() {
-        return this.getEncoder().getVelocity();
+    public double getSpeed(double constant) {
+        return this.getEncoder().getVelocity() / constant * 60;
     }
 
 }

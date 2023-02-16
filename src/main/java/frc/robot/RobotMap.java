@@ -19,6 +19,7 @@ public final class RobotMap {
     public static final int RIGHT_PIVOT = 6;
 
     public static final boolean LEFT_DT_INVERTED = false;
+    public static final boolean LEFT_PIV_INVERTED = false;
 
 
 }
