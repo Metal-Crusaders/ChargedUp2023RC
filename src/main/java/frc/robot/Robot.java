@@ -25,6 +25,18 @@ public class Robot extends TimedRobot {
 
   boolean pathScheduled = false;
 
+  private void resetStuff() {
+    m_robotContainer.drive.resetEncoders();
+    m_robotContainer.drive.getGyro().reset();
+    m_robotContainer.drive.coast();
+
+    m_robotContainer.pivot.resetEncoder();
+    m_robotContainer.leftPivot.coast();
+    m_robotContainer.rightPivot.coast();
+
+    m_robotContainer.elevator.resetEncoder();
+  }
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -39,6 +51,7 @@ public class Robot extends TimedRobot {
 
     CommandScheduler.getInstance().setDefaultCommand(m_robotContainer.drive, m_robotContainer.tankTeleop);
     CommandScheduler.getInstance().setDefaultCommand(m_robotContainer.pivot, m_robotContainer.pivotTeleop);
+    CommandScheduler.getInstance().setDefaultCommand(m_robotContainer.elevator, m_robotContainer.elevatorTeleop);
   }
 
   /**
@@ -60,13 +73,7 @@ public class Robot extends TimedRobot {
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
-    m_robotContainer.drive.resetEncoders();
-    m_robotContainer.drive.getGyro().reset();
-    m_robotContainer.drive.coast();
-
-    m_robotContainer.pivot.resetEncoder();
-    m_robotContainer.leftPivot.coast();
-    m_robotContainer.rightPivot.coast();
+    resetStuff();
   }
 
   @Override
@@ -75,13 +82,7 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    m_robotContainer.drive.resetEncoders();
-    m_robotContainer.drive.getGyro().reset();
-    m_robotContainer.drive.brake();
-
-    m_robotContainer.pivot.resetEncoder();
-    m_robotContainer.leftPivot.brake();
-    m_robotContainer.rightPivot.brake();
+    resetStuff();
 
     timer.reset();
     timer.start();
@@ -123,13 +124,7 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
 
-    m_robotContainer.drive.brake();
-    m_robotContainer.drive.resetEncoders();
-    m_robotContainer.drive.getGyro().reset();
-
-    m_robotContainer.pivot.resetEncoder();
-    m_robotContainer.leftPivot.brake();
-    m_robotContainer.rightPivot.brake();
+    resetStuff();
   }
 
   /** This function is called periodically during operator control. */

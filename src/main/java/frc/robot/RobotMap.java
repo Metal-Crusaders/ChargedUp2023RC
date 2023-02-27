@@ -21,5 +21,11 @@ public final class RobotMap {
     public static final boolean LEFT_DT_INVERTED = false;
     public static final boolean LEFT_PIV_INVERTED = false;
 
+    // PWM / DIO
+    public static final int ELEVATOR_PWM_ID1 = 7;
+    public static final int ELEVATOR_PWM_ID2 = 8;
+    public static final int ELEVATOR_IN = 1; // TODO change these
+    public static final int ELEVATOR_OUT = 1;
+
 
 }
