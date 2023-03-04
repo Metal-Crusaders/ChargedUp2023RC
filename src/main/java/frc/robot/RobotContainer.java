@@ -5,16 +5,21 @@
 package frc.robot;
 
 import com.kauailabs.navx.frc.AHRS;
-import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.commands.claw.ClawTeleop;
 import frc.robot.commands.elevator.RawElevatorTeleop;
 import frc.robot.commands.tankdrive.RawTankTeleop;
 import frc.robot.commands.pivot.RawPivotTeleop;
 import frc.robot.motor.MySparkMax;
+import frc.robot.sensors.MyButton;
+import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.TankDrive;
 import frc.robot.subsystems.Pivot;
@@ -25,23 +30,30 @@ public class RobotContainer {
   public MySparkMax leftFront, leftRear, rightFront, rightRear;
   public MySparkMax leftPivot, rightPivot;
   public VictorSP elevatorMotor1, elevatorMotor2;
+  public VictorSP clawRoller1, clawRoller2;
+
+  // Pneumatics
+  DoubleSolenoid clawSolenoid;
 
   // Sensors
   public AHRS gyro;
-  public Encoder elevatorEncoder;
+  public DigitalInput elevatorLower, elevatorUpper;
 
   // Subsystems
   public TankDrive drive;
   public Pivot pivot;
   public Elevator elevator;
+  public Claw claw;
 
   // OI + Buttons
   public OI oi;
+  public MyButton clawOpenBtn, clawRollerBtn;
 
   // Commands
   public RawTankTeleop tankTeleop;
   public RawPivotTeleop pivotTeleop;
   public RawElevatorTeleop elevatorTeleop;
+  public ClawTeleop clawTeleop;
 
   // Auto Commands
 
@@ -65,24 +77,39 @@ public class RobotContainer {
     rightPivot.follow(leftPivot, !RobotMap.LEFT_PIV_INVERTED);
 
     elevatorMotor1 = new VictorSP(RobotMap.ELEVATOR_PWM_ID1);
+    elevatorMotor1.setInverted(RobotMap.ELEVATOR_REVERSED);
     elevatorMotor2 = new VictorSP(RobotMap.ELEVATOR_PWM_ID2);
+    elevatorMotor2.setInverted(!RobotMap.ELEVATOR_REVERSED);
+
+    clawRoller1 = new VictorSP(RobotMap.CLAW_ROLLER1);
+    clawRoller1.setInverted(RobotMap.CLAW_REVERSED);
+    clawRoller2 = new VictorSP(RobotMap.CLAW_ROLLER2);
+    clawRoller2.setInverted(!RobotMap.CLAW_REVERSED);
+
+    // Pneumatics
+    clawSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, RobotMap.CLAW_IN, RobotMap.CLAW_OUT);
 
     // Sensors
     gyro = new AHRS(SPI.Port.kMXP);
-    elevatorEncoder = new Encoder(RobotMap.ELEVATOR_IN, RobotMap.ELEVATOR_OUT);
+    elevatorLower = new DigitalInput(RobotMap.ELEVATOR_LOWER);
+    elevatorUpper = new DigitalInput(RobotMap.ELEVATOR_UPPER);
 
     // Subsystems
     drive = new TankDrive(leftFront, rightFront, gyro);
     pivot = new Pivot(leftPivot);
-    elevator = new Elevator(elevatorMotor1, elevatorMotor2, elevatorEncoder);
+    elevator = new Elevator(elevatorMotor1, elevatorMotor2, elevatorLower, elevatorUpper);
+    claw = new Claw(clawSolenoid, clawRoller1, clawRoller2);
 
     // OI + Buttons
     oi = new OI();
+    clawOpenBtn = new MyButton(oi.getOperatorXbox(), OI.XBOX_A);
+    clawRollerBtn = new MyButton(oi.getOperatorXbox(), OI.XBOX_X);
 
     // Commands
     tankTeleop = new RawTankTeleop(drive, oi::getDriverXboxLeftTrigger, oi::getDriverXboxRightTrigger, oi::getDriverXboxLeftX);
-    pivotTeleop = new RawPivotTeleop(pivot, oi::getOperatorXboxLeftY);
-    elevatorTeleop = new RawElevatorTeleop(elevator, oi::getOperatorXboxRightY);
+    pivotTeleop = new RawPivotTeleop(pivot, oi::getOperatorXboxRightY);
+    elevatorTeleop = new RawElevatorTeleop(elevator, oi::getOperatorXboxLeftY);
+    clawTeleop = new ClawTeleop(claw, clawOpenBtn::isPressed, clawRollerBtn::isPressed);
 
     // Auto Commands
 

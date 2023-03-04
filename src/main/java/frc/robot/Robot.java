@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.TankDrive;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -34,7 +35,10 @@ public class Robot extends TimedRobot {
     m_robotContainer.leftPivot.coast();
     m_robotContainer.rightPivot.coast();
 
-    m_robotContainer.elevator.resetEncoder();
+    m_robotContainer.elevator.stop();
+
+    m_robotContainer.claw.pistonOff();
+    m_robotContainer.claw.setRollers(false);
   }
 
   /**
@@ -52,6 +56,7 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().setDefaultCommand(m_robotContainer.drive, m_robotContainer.tankTeleop);
     CommandScheduler.getInstance().setDefaultCommand(m_robotContainer.pivot, m_robotContainer.pivotTeleop);
     CommandScheduler.getInstance().setDefaultCommand(m_robotContainer.elevator, m_robotContainer.elevatorTeleop);
+    CommandScheduler.getInstance().setDefaultCommand(m_robotContainer.claw, m_robotContainer.clawTeleop);
   }
 
   /**
@@ -130,10 +135,10 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    SmartDashboard.putNumber("Speed of LeftFront: ", m_robotContainer.leftFront.getSpeed(m_robotContainer.drive.NUM_TICKS_PER_ROTATION));
-    SmartDashboard.putNumber("Speed of LeftRear: ", m_robotContainer.leftRear.getSpeed(m_robotContainer.drive.NUM_TICKS_PER_ROTATION));
-    SmartDashboard.putNumber("Speed of RightFront: ", m_robotContainer.rightFront.getSpeed(m_robotContainer.drive.NUM_TICKS_PER_ROTATION));
-    SmartDashboard.putNumber("Speed of RightRear: ", m_robotContainer.rightRear.getSpeed(m_robotContainer.drive.NUM_TICKS_PER_ROTATION));
+    SmartDashboard.putNumber("Speed of LeftFront: ", m_robotContainer.leftFront.getSpeed(TankDrive.NUM_TICKS_PER_ROTATION));
+    SmartDashboard.putNumber("Speed of LeftRear: ", m_robotContainer.leftRear.getSpeed(TankDrive.NUM_TICKS_PER_ROTATION));
+    SmartDashboard.putNumber("Speed of RightFront: ", m_robotContainer.rightFront.getSpeed(TankDrive.NUM_TICKS_PER_ROTATION));
+    SmartDashboard.putNumber("Speed of RightRear: ", m_robotContainer.rightRear.getSpeed(TankDrive.NUM_TICKS_PER_ROTATION));
     SmartDashboard.putBoolean("Is Right Front (2) Inverted: ", m_robotContainer.rightFront.getInverted());
     SmartDashboard.putBoolean("Is Right Rear (3) Inverted: ", m_robotContainer.rightRear.getInverted());
   }

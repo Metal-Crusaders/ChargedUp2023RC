@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.motorcontrol.Victor;
 import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
@@ -12,14 +13,13 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Elevator extends SubsystemBase {
 
     VictorSP motor1, motor2;
-    Encoder encoder;
+    DigitalInput lowerLimit, upperLimit;
 
-    public Elevator(VictorSP motor1, VictorSP motor2, Encoder encoder) {
+    public Elevator(VictorSP motor1, VictorSP motor2, DigitalInput lowerLimit, DigitalInput upperLimit) {
         this.motor1 = motor1;
         this.motor2 = motor2;
-        this.encoder = encoder;
-
-        setDistancePerPulse(420);
+        this.lowerLimit = lowerLimit;
+        this.upperLimit = upperLimit;
     }
 
     // basic motor methods
@@ -41,20 +41,21 @@ public class Elevator extends SubsystemBase {
         return this.motor2;
     }
 
-    // basic encoder methods
-    public void resetEncoder() {
-        this.encoder.reset();
+    // basic limit switch methods:
+
+    public DigitalInput getUpperLimit() {
+        return upperLimit;
     }
 
-    public void setDistancePerPulse(double dpp) {
-        this.encoder.setDistancePerPulse(dpp);
+    public DigitalInput getLowerLimit() {
+        return lowerLimit;
     }
 
-    public double getDistance() {
-        return this.encoder.getDistance();
+    public boolean upperLimitTriggered() {
+        return upperLimit.get();
     }
 
-    public Encoder getEncoder() {
-        return this.encoder;
+    public boolean lowerLimitTriggered() {
+        return lowerLimit.get();
     }
 }

@@ -20,12 +20,20 @@ public final class RobotMap {
 
     public static final boolean LEFT_DT_INVERTED = false;
     public static final boolean LEFT_PIV_INVERTED = false;
+    public static final boolean ELEVATOR_REVERSED = false;
+    public static final boolean CLAW_REVERSED = false;
 
     // PWM / DIO
     public static final int ELEVATOR_PWM_ID1 = 7;
     public static final int ELEVATOR_PWM_ID2 = 8;
-    public static final int ELEVATOR_IN = 1; // TODO change these
-    public static final int ELEVATOR_OUT = 1;
+    public static final int ELEVATOR_LOWER = 10; // TODO change these for encoder vals
+    public static final int ELEVATOR_UPPER = 11;
 
+    public static final int CLAW_ROLLER1 = 5;
+    public static final int CLAW_ROLLER2 = 6;
+
+    // PNEUMATICS
+    public static final int CLAW_IN = 1;
+    public static final int CLAW_OUT = 2;
 
 }

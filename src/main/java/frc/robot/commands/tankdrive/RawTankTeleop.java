@@ -14,7 +14,7 @@ public class RawTankTeleop extends CommandBase {
 
     private final TankDrive driveTrain;
 
-    private final double DEADBAND = 0.12;
+    private final double DEADZONE = 0.12;
 
     public RawTankTeleop(TankDrive driveTrain, DoubleSupplier leftInput, DoubleSupplier rightInput, DoubleSupplier steeringInput) {
 
@@ -34,15 +34,17 @@ public class RawTankTeleop extends CommandBase {
     public void execute() {
         double speedSensitivity = 1;
         double speedPower = 2;
+        double steeringPower = 3; // TODO change this depending on driver interest
 
-        double steering = steeringInput.getAsDouble();
-        if (steering > -DEADBAND && steering < DEADBAND) {
+        double steering = Math.pow(steeringInput.getAsDouble(), steeringPower);
+        if (steering > -DEADZONE && steering < DEADZONE) {
             steering = 0;
         }
 
         double throttle = rightInput.getAsDouble() - leftInput.getAsDouble();
         double rightSign = (((throttle - steering) * speedSensitivity) == 0) ? 0 : ((throttle - steering) * speedSensitivity) / Math.abs((throttle - steering) * speedSensitivity);
         double leftSign = (((throttle + steering) * speedSensitivity) == 0) ? 0 :((throttle + steering) * speedSensitivity) / Math.abs((throttle + steering) * speedSensitivity);
+
         double rpower = rightSign * Math.pow((throttle - steering) * speedSensitivity, speedPower);
         double lpower = leftSign * Math.pow((throttle + steering) * speedSensitivity, speedPower);
 
