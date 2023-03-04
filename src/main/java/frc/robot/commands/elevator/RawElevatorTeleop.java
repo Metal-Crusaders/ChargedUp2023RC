@@ -10,8 +10,8 @@ public class RawElevatorTeleop extends CommandBase {
 
     public static final int LOWER_BOUND = -5, UPPER_BOUND = 425;
     // TODO double check to make sure Elevator bounds are working
-    public static final double FULL_POWER = 0.2;
-    public static final double DEADBAND = 0.05;
+    public static final double FULL_POWER = 0.5;
+    public static final double DEADBAND = 0.15;
 
     private Elevator elevator;
     private DoubleSupplier elevatorInput;
@@ -31,10 +31,10 @@ public class RawElevatorTeleop extends CommandBase {
 
     @Override
     public void execute() {
-        double speed = elevatorInput.getAsDouble() * FULL_POWER;
-        SmartDashboard.putNumber("Elevator Speed", speed);
-//        SmartDashboard.putNumber("Elevator Encoder Ticks", elevator.getDistance());
 
+        double elevatorPower = 1;
+
+        double speed = Math.pow(elevatorInput.getAsDouble(), elevatorPower) * FULL_POWER;
         if (speed < DEADBAND && speed > -DEADBAND) {
             speed = 0;
         }
@@ -45,6 +45,10 @@ public class RawElevatorTeleop extends CommandBase {
         ) {
             speed = 0;
         }
+
+        SmartDashboard.putNumber("Elevator Speed", speed);
+        SmartDashboard.putBoolean("Lower Limit Triggered", elevator.lowerLimitTriggered());
+        SmartDashboard.putBoolean("Upper Limit Triggered", elevator.upperLimitTriggered());
 
         elevator.set(speed);
     }

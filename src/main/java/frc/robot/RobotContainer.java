@@ -71,23 +71,23 @@ public class RobotContainer {
     leftRear.follow(leftFront);
     rightRear.follow(rightFront);
 
-    leftPivot = new MySparkMax(RobotMap.LEFT_PIVOT, true, RobotMap.LEFT_PIV_INVERTED);
-    rightPivot = new MySparkMax(RobotMap.RIGHT_PIVOT, true, !RobotMap.LEFT_PIV_INVERTED);
-
-    rightPivot.follow(leftPivot, !RobotMap.LEFT_PIV_INVERTED);
+//    leftPivot = new MySparkMax(RobotMap.LEFT_PIVOT, true, RobotMap.LEFT_PIV_INVERTED);
+//    rightPivot = new MySparkMax(RobotMap.RIGHT_PIVOT, true, !RobotMap.LEFT_PIV_INVERTED);
+//
+//    rightPivot.follow(leftPivot, !RobotMap.LEFT_PIV_INVERTED);
 
     elevatorMotor1 = new VictorSP(RobotMap.ELEVATOR_PWM_ID1);
     elevatorMotor1.setInverted(RobotMap.ELEVATOR_REVERSED);
     elevatorMotor2 = new VictorSP(RobotMap.ELEVATOR_PWM_ID2);
     elevatorMotor2.setInverted(!RobotMap.ELEVATOR_REVERSED);
 
-    clawRoller1 = new VictorSP(RobotMap.CLAW_ROLLER1);
-    clawRoller1.setInverted(RobotMap.CLAW_REVERSED);
-    clawRoller2 = new VictorSP(RobotMap.CLAW_ROLLER2);
-    clawRoller2.setInverted(!RobotMap.CLAW_REVERSED);
+//    clawRoller1 = new VictorSP(RobotMap.CLAW_ROLLER1);
+//    clawRoller1.setInverted(RobotMap.CLAW_REVERSED);
+//    clawRoller2 = new VictorSP(RobotMap.CLAW_ROLLER2);
+//    clawRoller2.setInverted(!RobotMap.CLAW_REVERSED);
 
     // Pneumatics
-    clawSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, RobotMap.CLAW_IN, RobotMap.CLAW_OUT);
+//    clawSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, RobotMap.CLAW_IN, RobotMap.CLAW_OUT);
 
     // Sensors
     gyro = new AHRS(SPI.Port.kMXP);
@@ -96,20 +96,20 @@ public class RobotContainer {
 
     // Subsystems
     drive = new TankDrive(leftFront, rightFront, gyro);
-    pivot = new Pivot(leftPivot);
+//    pivot = new Pivot(leftPivot);
     elevator = new Elevator(elevatorMotor1, elevatorMotor2, elevatorLower, elevatorUpper);
-    claw = new Claw(clawSolenoid, clawRoller1, clawRoller2);
+//    claw = new Claw(clawSolenoid, clawRoller1, clawRoller2);
 
     // OI + Buttons
     oi = new OI();
-    clawOpenBtn = new MyButton(oi.getOperatorXbox(), OI.XBOX_A);
-    clawRollerBtn = new MyButton(oi.getOperatorXbox(), OI.XBOX_X);
+//    clawOpenBtn = new MyButton(oi.getOperatorXbox(), OI.XBOX_A);
+//    clawRollerBtn = new MyButton(oi.getOperatorXbox(), OI.XBOX_X);
 
     // Commands
     tankTeleop = new RawTankTeleop(drive, oi::getDriverXboxLeftTrigger, oi::getDriverXboxRightTrigger, oi::getDriverXboxLeftX);
-    pivotTeleop = new RawPivotTeleop(pivot, oi::getOperatorXboxRightY);
+//    pivotTeleop = new RawPivotTeleop(pivot, oi::getOperatorXboxRightY);
     elevatorTeleop = new RawElevatorTeleop(elevator, oi::getOperatorXboxLeftY);
-    clawTeleop = new ClawTeleop(claw, clawOpenBtn::isPressed, clawRollerBtn::isPressed);
+//    clawTeleop = new ClawTeleop(claw, clawOpenBtn::isPressed, clawRollerBtn::isPressed);
 
     // Auto Commands
 

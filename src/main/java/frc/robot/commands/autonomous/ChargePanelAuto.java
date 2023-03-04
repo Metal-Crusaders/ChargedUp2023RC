@@ -3,7 +3,7 @@ package frc.robot.commands.autonomous;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.TankDrive;
 
-public class SwivelTest extends SequentialCommandGroup {
+public class ChargePanelAuto extends SequentialCommandGroup {
 
     private final TankDrive drive;
 
@@ -11,7 +11,7 @@ public class SwivelTest extends SequentialCommandGroup {
 
     private DriveTurnAuto turnLeft, turnRight;
 
-    public SwivelTest(TankDrive drive, double target1, double target2) {
+    public ChargePanelAuto(TankDrive drive, double target1, double target2) {
         super();
         this.drive = drive;
         this.target1 = target1;

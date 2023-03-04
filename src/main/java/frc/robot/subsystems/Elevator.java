@@ -20,6 +20,9 @@ public class Elevator extends SubsystemBase {
         this.motor2 = motor2;
         this.lowerLimit = lowerLimit;
         this.upperLimit = upperLimit;
+
+        this.motor1.setSafetyEnabled(true);
+        this.motor2.setSafetyEnabled(true);
     }
 
     // basic motor methods
@@ -52,10 +55,12 @@ public class Elevator extends SubsystemBase {
     }
 
     public boolean upperLimitTriggered() {
-        return upperLimit.get();
+//        return upperLimit.get();
+        return false;
     }
 
     public boolean lowerLimitTriggered() {
         return lowerLimit.get();
+//        return false;
     }
 }

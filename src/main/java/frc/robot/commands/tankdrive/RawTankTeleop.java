@@ -33,24 +33,34 @@ public class RawTankTeleop extends CommandBase {
     @Override
     public void execute() {
         double speedSensitivity = 1;
+        double steeringSensitivity = 0.4;
         double speedPower = 2;
-        double steeringPower = 3; // TODO change this depending on driver interest
+        double steeringPower = 1; // TODO change this depending on driver interest
 
-        double steering = Math.pow(steeringInput.getAsDouble(), steeringPower);
+        double steering = Math.pow(steeringInput.getAsDouble(), steeringPower) * steeringSensitivity;
         if (steering > -DEADZONE && steering < DEADZONE) {
             steering = 0;
         }
 
         double throttle = rightInput.getAsDouble() - leftInput.getAsDouble();
-        double rightSign = (((throttle - steering) * speedSensitivity) == 0) ? 0 : ((throttle - steering) * speedSensitivity) / Math.abs((throttle - steering) * speedSensitivity);
-        double leftSign = (((throttle + steering) * speedSensitivity) == 0) ? 0 :((throttle + steering) * speedSensitivity) / Math.abs((throttle + steering) * speedSensitivity);
 
-        double rpower = rightSign * Math.pow((throttle - steering) * speedSensitivity, speedPower);
-        double lpower = leftSign * Math.pow((throttle + steering) * speedSensitivity, speedPower);
+        double rRawPower = (throttle - (throttle * steering)) * speedSensitivity;
+        double lRawPower = (throttle + (throttle * steering)) * speedSensitivity;
+
+        if (throttle == 0) {
+            rRawPower = -steering;
+            lRawPower = steering;
+        }
+
+        double rightSign = (rRawPower == 0) ? 0 : (rRawPower) / Math.abs(rRawPower);
+        double leftSign = (lRawPower == 0) ? 0 : (lRawPower) / Math.abs(lRawPower);
+
+        double rpower = rightSign * Math.pow(rRawPower, speedPower);
+        double lpower = leftSign * Math.pow(lRawPower, speedPower);
 
         driveTrain.set(rpower, lpower);
         SmartDashboard.putNumber("steering", steering);
-        SmartDashboard.putNumber("throttle", rightInput.getAsDouble() - leftInput.getAsDouble());
+        SmartDashboard.putNumber("throttle", throttle);
     }
 
     @Override

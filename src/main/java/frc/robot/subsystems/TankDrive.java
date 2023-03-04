@@ -9,14 +9,20 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.motor.MySparkMax;
 import com.kauailabs.navx.frc.AHRS;
 
+
+
 public class TankDrive extends SubsystemBase {
 
     public final static double NUM_TICKS_PER_ROTATION = 3550;
     public final static double NUM_INCHES_PER_ROTATION = 6 * Math.PI;
-    private final int DRIVETRAIN_INCHES_PER_PULSE = 3;
+    private final double DRIVETRAIN_INCHES_PER_PULSE = (NUM_INCHES_PER_ROTATION / NUM_TICKS_PER_ROTATION);
 
     private final MySparkMax left, right;
     private final AHRS gyro;
+
+    private static final double kP = 0;
+    private static final double kI = 0;
+    private static final double kD = 0;
 
     // PID Stuff
     private DifferentialDriveOdometry odometry;
@@ -31,7 +37,7 @@ public class TankDrive extends SubsystemBase {
         gyro.reset();
 
         // PID Stuff
-        this.drivePID = new PIDController(0, 0, 0);
+        this.drivePID = new PIDController(kP, kI, kD);
         this.odometry = new DifferentialDriveOdometry(gyro.getRotation2d(), 0, 0);
     }
 
@@ -106,6 +112,10 @@ public class TankDrive extends SubsystemBase {
         return (getLeftDistance() + getRightDistance()) / 2.0;
     }
 
+    public Pose2d getPose(){
+        return odometry.getPoseMeters();
+    }
+
     // PID Stuff
     @Override
     public void periodic(){
@@ -128,5 +138,4 @@ public class TankDrive extends SubsystemBase {
                 -getRightDistance() * 10 * DRIVETRAIN_INCHES_PER_PULSE * 0.0254
         );
     }
-
 }
