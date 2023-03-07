@@ -5,10 +5,8 @@
 package frc.robot;
 
 import com.kauailabs.navx.frc.AHRS;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.motorcontrol.Victor;
 import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -28,7 +26,7 @@ public class RobotContainer {
 
   // Motors
   public MySparkMax leftFront, leftRear, rightFront, rightRear;
-  public MySparkMax leftPivot, rightPivot;
+  public VictorSP leftPivot, rightPivot;
   public VictorSP elevatorMotor1, elevatorMotor2;
   public VictorSP clawRoller1, clawRoller2;
 
@@ -38,6 +36,7 @@ public class RobotContainer {
   // Sensors
   public AHRS gyro;
   public DigitalInput elevatorLower, elevatorUpper;
+  public Encoder pivotEncoder;
 
   // Subsystems
   public TankDrive drive;
@@ -71,10 +70,11 @@ public class RobotContainer {
     leftRear.follow(leftFront);
     rightRear.follow(rightFront);
 
-//    leftPivot = new MySparkMax(RobotMap.LEFT_PIVOT, true, RobotMap.LEFT_PIV_INVERTED);
-//    rightPivot = new MySparkMax(RobotMap.RIGHT_PIVOT, true, !RobotMap.LEFT_PIV_INVERTED);
+//    leftPivot = new VictorSP(RobotMap.LEFT_PIVOT);
+//    rightPivot = new VictorSP(RobotMap.RIGHT_PIVOT);
 //
-//    rightPivot.follow(leftPivot, !RobotMap.LEFT_PIV_INVERTED);
+//    leftPivot.setInverted(RobotMap.LEFT_PIV_INVERTED);
+//    rightPivot.setInverted(!RobotMap.LEFT_PIV_INVERTED);
 
     elevatorMotor1 = new VictorSP(RobotMap.ELEVATOR_PWM_ID1);
     elevatorMotor1.setInverted(RobotMap.ELEVATOR_REVERSED);
@@ -93,10 +93,11 @@ public class RobotContainer {
     gyro = new AHRS(SPI.Port.kMXP);
     elevatorLower = new DigitalInput(RobotMap.ELEVATOR_LOWER);
     elevatorUpper = new DigitalInput(RobotMap.ELEVATOR_UPPER);
+    pivotEncoder = new Encoder(RobotMap.ENCODER_ID_IN, RobotMap.ENCODER_ID_OUT);
 
     // Subsystems
     drive = new TankDrive(leftFront, rightFront, gyro);
-//    pivot = new Pivot(leftPivot);
+//    pivot = new Pivot(leftPivot, rightPivot, pivotEncoder);
     elevator = new Elevator(elevatorMotor1, elevatorMotor2, elevatorLower, elevatorUpper);
 //    claw = new Claw(clawSolenoid, clawRoller1, clawRoller2);
 

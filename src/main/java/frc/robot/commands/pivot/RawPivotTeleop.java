@@ -58,5 +58,4 @@ public class RawPivotTeleop extends CommandBase {
         this.pivot.stop();
     }
 
-
 }

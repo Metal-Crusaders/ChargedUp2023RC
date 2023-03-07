@@ -4,7 +4,8 @@
 
 package frc.robot.subsystems;
 
-import frc.robot.motor.MySparkMax;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -12,39 +13,42 @@ public class Pivot extends SubsystemBase {
 
   public static final int TICKS_PER_ROTATION = 420; // TODO change this
   public static final int PIVOT_GEAR_RATIO = 27;
+  private final VictorSP pivotL, pivotR;
+  private final Encoder encoder;
 
-  private final MySparkMax pivot;
+  public Pivot(VictorSP pivotL, VictorSP pivotR, Encoder encoder) {
+    this.pivotL = pivotL;
+    this.pivotR = pivotR;
+    this.encoder = encoder;
 
-  public Pivot(MySparkMax pivot) {
-    this.pivot = pivot;
-
-    pivot.brake();
+    resetEncoder();
   }
 
   // PIVOT MOTOR METHODS
-  public MySparkMax getMotor() {
-    return pivot;
+  public VictorSP getLeftMotor() {
+    return pivotL;
+  }
+
+  public VictorSP getRightMotor() {
+    return pivotR;
   }
 
   public void set(double speed) {
-    pivot.set(speed);
+    pivotL.set(speed);
+    pivotR.set(speed);
   }
 
   public void stop() {
-    pivot.stop();
+    this.set(0);
   }
 
   public double getEncoderTicks() {
-    return pivot.getDistance();
-  }
-  public double getSpeed() {
-    return pivot.getSpeed(TICKS_PER_ROTATION);
+    return encoder.getDistance();
   }
 
   public void resetEncoder() {
-    pivot.resetEncoder();
+    encoder.reset();
   }
-  
 
   @Override
   public void periodic() {
