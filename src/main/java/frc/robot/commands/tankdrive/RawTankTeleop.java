@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.TankDrive;
 
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 public class RawTankTeleop extends CommandBase {
@@ -11,17 +12,29 @@ public class RawTankTeleop extends CommandBase {
     private boolean filterEnabled;
 
     private DoubleSupplier leftInput, rightInput, steeringInput;
+    private BooleanSupplier purpleInput, yellowInput;
+
+    private boolean purpleToggle, yellowToggle;
 
     private final TankDrive driveTrain;
 
     private final double DEADZONE = 0.12;
 
-    public RawTankTeleop(TankDrive driveTrain, DoubleSupplier leftInput, DoubleSupplier rightInput, DoubleSupplier steeringInput) {
+    public RawTankTeleop(
+            TankDrive driveTrain,
+            DoubleSupplier leftInput,
+            DoubleSupplier rightInput,
+            DoubleSupplier steeringInput,
+            BooleanSupplier purpleInput,
+            BooleanSupplier yellowInput
+    ) {
 
         this.driveTrain = driveTrain;
         this.leftInput = leftInput;
         this.rightInput = rightInput;
         this.steeringInput = steeringInput;
+        this.purpleInput = purpleInput;
+        this.yellowInput = yellowInput;
 
         addRequirements(driveTrain);
     }
@@ -61,6 +74,22 @@ public class RawTankTeleop extends CommandBase {
         driveTrain.set(rpower, lpower);
         SmartDashboard.putNumber("steering", steering);
         SmartDashboard.putNumber("throttle", throttle);
+
+        if (purpleInput.getAsBoolean()) {
+            purpleToggle = !purpleToggle;
+        }
+
+        if (yellowInput.getAsBoolean()) {
+            yellowToggle = !yellowToggle;
+        }
+
+        if (purpleToggle) {
+            driveTrain.setPurple();
+        }
+
+        if (yellowToggle) {
+            driveTrain.setYellow();
+        }
     }
 
     @Override

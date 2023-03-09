@@ -37,6 +37,7 @@ public class RobotContainer {
   public AHRS gyro;
   public DigitalInput elevatorLower, elevatorUpper;
   public Encoder pivotEncoder;
+  public AddressableLED leds;
 
   // Subsystems
   public TankDrive drive;
@@ -47,6 +48,7 @@ public class RobotContainer {
   // OI + Buttons
   public OI oi;
   public MyButton clawOpenBtn, clawRollerBtn;
+  public MyButton purpleBtn, yellowBtn;
 
   // Commands
   public RawTankTeleop tankTeleop;
@@ -94,9 +96,11 @@ public class RobotContainer {
     elevatorLower = new DigitalInput(RobotMap.ELEVATOR_LOWER);
     elevatorUpper = new DigitalInput(RobotMap.ELEVATOR_UPPER);
     pivotEncoder = new Encoder(RobotMap.ENCODER_ID_IN, RobotMap.ENCODER_ID_OUT);
+    leds = new AddressableLED(RobotMap.LED_PWM_ID);
+    leds.setLength(TankDrive.NUM_LEDS);
 
     // Subsystems
-    drive = new TankDrive(leftFront, rightFront, gyro);
+    drive = new TankDrive(leftFront, rightFront, gyro, leds);
 //    pivot = new Pivot(leftPivot, rightPivot, pivotEncoder);
     elevator = new Elevator(elevatorMotor1, elevatorMotor2, elevatorLower, elevatorUpper);
 //    claw = new Claw(clawSolenoid, clawRoller1, clawRoller2);
@@ -105,9 +109,15 @@ public class RobotContainer {
     oi = new OI();
 //    clawOpenBtn = new MyButton(oi.getOperatorXbox(), OI.XBOX_A);
 //    clawRollerBtn = new MyButton(oi.getOperatorXbox(), OI.XBOX_X);
+    purpleBtn = new MyButton(oi.getDriverXbox(), OI.XBOX_A);
+    yellowBtn = new MyButton(oi.getDriverXbox(), OI.XBOX_B);
 
     // Commands
-    tankTeleop = new RawTankTeleop(drive, oi::getDriverXboxLeftTrigger, oi::getDriverXboxRightTrigger, oi::getDriverXboxLeftX);
+    tankTeleop = new RawTankTeleop(
+            drive,
+            oi::getDriverXboxLeftTrigger, oi::getDriverXboxRightTrigger, oi::getDriverXboxLeftX,
+            purpleBtn::isPressed, yellowBtn::isPressed
+    );
 //    pivotTeleop = new RawPivotTeleop(pivot, oi::getOperatorXboxRightY);
     elevatorTeleop = new RawElevatorTeleop(elevator, oi::getOperatorXboxLeftY);
 //    clawTeleop = new ClawTeleop(claw, clawOpenBtn::isPressed, clawRollerBtn::isPressed);

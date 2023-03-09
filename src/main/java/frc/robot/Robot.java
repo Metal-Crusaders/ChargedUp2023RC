@@ -30,6 +30,7 @@ public class Robot extends TimedRobot {
     m_robotContainer.drive.resetEncoders();
     m_robotContainer.drive.getGyro().reset();
     m_robotContainer.drive.coast();
+    m_robotContainer.drive.lightsOff();
 
 //    m_robotContainer.pivot.resetEncoder();
 //    m_robotContainer.leftPivot.coast();

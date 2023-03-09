@@ -36,6 +36,8 @@ public final class RobotMap {
     public static final int CLAW_ROLLER1 = 5;
     public static final int CLAW_ROLLER2 = 6;
 
+    public static final int LED_PWM_ID = 9;
+
     // PNEUMATICS
     public static final int CLAW_IN = 1;
     public static final int CLAW_OUT = 2;
