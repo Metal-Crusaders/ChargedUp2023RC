@@ -39,6 +39,7 @@ public class RobotContainer {
   public DigitalInput elevatorLower, elevatorUpper;
   public Encoder pivotEncoder;
   public AddressableLED leds;
+  public AddressableLEDBuffer ledBuf;
 
   // Subsystems
   public TankDrive drive;
@@ -98,11 +99,9 @@ public class RobotContainer {
     elevatorLower = new DigitalInput(RobotMap.ELEVATOR_LOWER);
     elevatorUpper = new DigitalInput(RobotMap.ELEVATOR_UPPER);
     pivotEncoder = new Encoder(RobotMap.ENCODER_ID_IN, RobotMap.ENCODER_ID_OUT);
-    leds = new AddressableLED(RobotMap.LED_PWM_ID);
-    leds.setLength(TankDrive.NUM_LEDS);
 
     // Subsystems
-    drive = new TankDrive(leftFront, rightFront, gyro, leds);
+    drive = new TankDrive(leftFront, rightFront, gyro);
 //    pivot = new Pivot(leftPivot, rightPivot, pivotEncoder);
     elevator = new Elevator(elevatorMotor1, elevatorMotor2, elevatorLower, elevatorUpper);
 //    claw = new Claw(clawSolenoid, clawRoller1, clawRoller2);

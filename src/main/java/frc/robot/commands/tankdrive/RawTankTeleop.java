@@ -72,8 +72,11 @@ public class RawTankTeleop extends CommandBase {
         double lpower = leftSign * Math.pow(lRawPower, speedPower);
 
         driveTrain.set(rpower, lpower);
+
         SmartDashboard.putNumber("steering", steering);
         SmartDashboard.putNumber("throttle", throttle);
+        SmartDashboard.putBoolean("purple toggle", purpleToggle);
+        SmartDashboard.putBoolean("yellow toggle", yellowToggle);
 
         if (purpleInput.getAsBoolean()) {
             purpleToggle = !purpleToggle;
@@ -84,11 +87,11 @@ public class RawTankTeleop extends CommandBase {
         }
 
         if (purpleToggle) {
-            driveTrain.setPurple();
+            // need to set to color purple here
         }
 
         if (yellowToggle) {
-            driveTrain.setYellow();
+            // yellow here
         }
     }
 

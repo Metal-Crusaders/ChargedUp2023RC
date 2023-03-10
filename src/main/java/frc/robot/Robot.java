@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.AddressableLED;
+import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -30,7 +32,7 @@ public class Robot extends TimedRobot {
     m_robotContainer.drive.resetEncoders();
     m_robotContainer.drive.getGyro().reset();
     m_robotContainer.drive.coast();
-    m_robotContainer.drive.lightsOff();
+//    m_robotContainer.drive.lightsOff();
 
 //    m_robotContainer.pivot.resetEncoder();
 //    m_robotContainer.leftPivot.coast();

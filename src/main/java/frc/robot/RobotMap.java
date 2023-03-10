@@ -31,12 +31,10 @@ public final class RobotMap {
     public static final int ELEVATOR_LOWER = 2; // TODO change these for limit switch
     public static final int ELEVATOR_UPPER = 3;
 
-    public static final int ENCODER_ID_IN = 3;
-    public static final int ENCODER_ID_OUT = 4;
+    public static final int ENCODER_ID_IN = 4;
+    public static final int ENCODER_ID_OUT = 5;
     public static final int CLAW_ROLLER1 = 5;
     public static final int CLAW_ROLLER2 = 6;
-
-    public static final int LED_PWM_ID = 9;
 
     // PNEUMATICS
     public static final int CLAW_IN = 1;
