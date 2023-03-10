@@ -88,7 +88,7 @@ public class TankDrive extends SubsystemBase {
     }
 
     public double getTilt() {
-        return gyro.getPitch();
+        return gyro.getRoll();
     }
 
     public double getYaw() {

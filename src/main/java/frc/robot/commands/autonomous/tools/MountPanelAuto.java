@@ -8,9 +8,9 @@ public class MountPanelAuto extends CommandBase {
 
     private final TankDrive driveTrain;
 
-    private final double deadband = 5;
+    private final double deadband = 15;
 
-    private final double FULL_POWER = 0.2;
+    private final double FULL_POWER = 0.3;
 
     private boolean isBackwards;
 
@@ -29,14 +29,22 @@ public class MountPanelAuto extends CommandBase {
 
     @Override
     public void execute() {
-        driveTrain.set(FULL_POWER);
+
+        double speed = FULL_POWER;
+
+        if (isBackwards) {
+            speed *= -1;
+        }
+
+        driveTrain.set(speed);
+        SmartDashboard.putNumber("Gyro Angle Mounting", driveTrain.getTilt());
     }
 
     @Override
     public void end(boolean interrupted) {
         driveTrain.set(0);
         try {
-            Thread.sleep(100);
+            Thread.sleep(1);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -44,10 +52,6 @@ public class MountPanelAuto extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        if (isBackwards) {
-            return (driveTrain.getTilt() > deadband);
-        } else {
-            return (driveTrain.getTilt() < -deadband);
-        }
+        return ((driveTrain.getTilt() > deadband) || (driveTrain.getTilt() < -deadband));
     }
 }
