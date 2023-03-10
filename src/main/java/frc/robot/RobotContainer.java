@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.commands.autonomous.ChargePanelAuto;
 import frc.robot.commands.claw.ClawTeleop;
 import frc.robot.commands.elevator.RawElevatorTeleop;
 import frc.robot.commands.tankdrive.RawTankTeleop;
@@ -57,6 +58,7 @@ public class RobotContainer {
   public ClawTeleop clawTeleop;
 
   // Auto Commands
+  ChargePanelAuto chargePanelAuto;
 
   SendableChooser<Command> chooser;
 
@@ -123,10 +125,13 @@ public class RobotContainer {
 //    clawTeleop = new ClawTeleop(claw, clawOpenBtn::isPressed, clawRollerBtn::isPressed);
 
     // Auto Commands
+    chargePanelAuto = new ChargePanelAuto(drive, false);
 
     // Sendable Chooser:
     chooser = new SendableChooser<>();
     SmartDashboard.putData(chooser);
+
+    chooser.addOption("Charge Panel Middle Auto", chargePanelAuto);
 
     configureButtonBindings();
   }

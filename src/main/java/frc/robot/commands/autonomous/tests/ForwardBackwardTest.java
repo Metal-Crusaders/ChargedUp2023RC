@@ -1,6 +1,7 @@
-package frc.robot.commands.autonomous;
+package frc.robot.commands.autonomous.tests;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.autonomous.tools.DriveStraightAuto;
 import frc.robot.subsystems.TankDrive;
 
 public class ForwardBackwardTest extends SequentialCommandGroup {

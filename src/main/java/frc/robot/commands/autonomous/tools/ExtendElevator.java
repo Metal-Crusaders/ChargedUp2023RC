@@ -3,13 +3,13 @@ package frc.robot.commands.autonomous.tools;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Elevator;
 
-public class RestElevator extends CommandBase {
+public class ExtendElevator extends CommandBase {
 
     private Elevator elevator;
 
     private final double FULL_POWER = 0.25;
 
-    public RestElevator(Elevator elevator) {
+    public ExtendElevator(Elevator elevator) {
         super();
         this.elevator = elevator;
         addRequirements(elevator);
@@ -37,7 +37,7 @@ public class RestElevator extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return elevator.lowerLimitTriggered();
+        return elevator.upperLimitTriggered();
     }
 
 

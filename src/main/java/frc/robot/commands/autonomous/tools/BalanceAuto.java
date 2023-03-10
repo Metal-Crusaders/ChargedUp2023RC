@@ -1,11 +1,8 @@
-package frc.robot.commands.autonomous;
+package frc.robot.commands.autonomous.tools;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.TankDrive;
-
-import static java.lang.Math.max;
-import static java.lang.Math.min;
 
 public class BalanceAuto extends CommandBase {
 
