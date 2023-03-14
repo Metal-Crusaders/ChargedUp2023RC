@@ -75,11 +75,11 @@ public class RobotContainer {
     leftRear.follow(leftFront);
     rightRear.follow(rightFront);
 
-//    leftPivot = new VictorSP(RobotMap.LEFT_PIVOT);
-//    rightPivot = new VictorSP(RobotMap.RIGHT_PIVOT);
+    leftPivot = new VictorSP(RobotMap.LEFT_PIVOT);
+    rightPivot = new VictorSP(RobotMap.RIGHT_PIVOT);
 //
-//    leftPivot.setInverted(RobotMap.LEFT_PIV_INVERTED);
-//    rightPivot.setInverted(!RobotMap.LEFT_PIV_INVERTED);
+    leftPivot.setInverted(RobotMap.LEFT_PIV_INVERTED);
+    rightPivot.setInverted(!RobotMap.LEFT_PIV_INVERTED);
 
     elevatorMotor1 = new VictorSP(RobotMap.ELEVATOR_PWM_ID1);
     elevatorMotor1.setInverted(RobotMap.ELEVATOR_REVERSED);
@@ -90,20 +90,20 @@ public class RobotContainer {
 //    clawRoller1.setInverted(RobotMap.CLAW_REVERSED);
 //    clawRoller2 = new VictorSP(RobotMap.CLAW_ROLLER2);
 //    clawRoller2.setInverted(!RobotMap.CLAW_REVERSED);
-
-    // Pneumatics
+//
+//    // Pneumatics
 //    clawSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, RobotMap.CLAW_IN, RobotMap.CLAW_OUT);
 
     // Sensors
     gyro = new AHRS(SPI.Port.kMXP);
     elevatorLower = new DigitalInput(RobotMap.ELEVATOR_LOWER);
     elevatorUpper = new DigitalInput(RobotMap.ELEVATOR_UPPER);
-    pivotEncoder = new Encoder(RobotMap.ENCODER_ID_IN, RobotMap.ENCODER_ID_OUT);
+//    pivotEncoder = new Encoder(RobotMap.ENCODER_ID_IN, RobotMap.ENCODER_ID_OUT);
 
     // Subsystems
     drive = new TankDrive(leftFront, rightFront, gyro);
-//    pivot = new Pivot(leftPivot, rightPivot, pivotEncoder);
-    elevator = new Elevator(elevatorMotor1, elevatorMotor2, elevatorLower, elevatorUpper);
+    pivot = new Pivot(leftPivot, rightPivot);
+//    elevator = new Elevator(elevatorMotor1, elevatorMotor2, elevatorLower, elevatorUpper);
 //    claw = new Claw(clawSolenoid, clawRoller1, clawRoller2);
 
     // OI + Buttons
@@ -119,9 +119,11 @@ public class RobotContainer {
             oi::getDriverXboxLeftTrigger, oi::getDriverXboxRightTrigger, oi::getDriverXboxLeftX,
             purpleBtn::isPressed, yellowBtn::isPressed
     );
-//    pivotTeleop = new RawPivotTeleop(pivot, oi::getOperatorXboxRightY);
-    elevatorTeleop = new RawElevatorTeleop(elevator, oi::getOperatorXboxLeftY);
+    pivotTeleop = new RawPivotTeleop(pivot, oi::getOperatorXboxRightY);
+//    elevatorTeleop = new RawElevatorTeleop(elevator, oi::getOperatorXboxLeftY);
 //    clawTeleop = new ClawTeleop(claw, clawOpenBtn::isPressed, clawRollerBtn::isPressed);
+
+    // presets here
 
     // Auto Commands
     chargePanelAuto = new ChargePanelAuto(drive, false);

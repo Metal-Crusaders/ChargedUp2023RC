@@ -25,25 +25,25 @@ public class RawPivotTeleop extends CommandBase {
 
     @Override
     public void initialize() {
-        pivot.resetEncoder();
+//        pivot.resetEncoder();
     }
 
     @Override
     public void execute() {
         double speed = pivotInput.getAsDouble();
         SmartDashboard.putNumber("Pivot Speed", speed);
-        SmartDashboard.putNumber("Pivot Encoder Ticks", pivot.getEncoderTicks());
+//        SmartDashboard.putNumber("Pivot Encoder Ticks", pivot.getEncoderTicks());
 
         if (speed < DEADZONE && speed > -DEADZONE) {
             speed = 0;
         }
 
-        if (
-            (pivot.getEncoderTicks() > UPPER_BOUND && speed > 0) ||
-            (pivot.getEncoderTicks() < LOWER_BOUND && speed < 0)
-        ) {
-            speed = 0;
-        }
+//        if (
+//            (pivot.getEncoderTicks() > UPPER_BOUND && speed > 0) ||
+//            (pivot.getEncoderTicks() < LOWER_BOUND && speed < 0)
+//        ) {
+//            speed = 0;
+//        }
 
         pivot.set(speed * FULL_POWER);
     }

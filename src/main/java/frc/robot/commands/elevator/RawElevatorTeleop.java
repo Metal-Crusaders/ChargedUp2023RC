@@ -8,8 +8,6 @@ import java.util.function.DoubleSupplier;
 
 public class RawElevatorTeleop extends CommandBase {
 
-    public static final int LOWER_BOUND = -5, UPPER_BOUND = 425;
-    // TODO double check to make sure Elevator bounds are working
     public static final double FULL_POWER = 0.5;
     public static final double DEADBAND = 0.15;
 

@@ -14,14 +14,16 @@ public class Pivot extends SubsystemBase {
   public static final int TICKS_PER_ROTATION = 420; // TODO change this
   public static final int PIVOT_GEAR_RATIO = 27;
   private final VictorSP pivotL, pivotR;
-  private final Encoder encoder;
+//  private final Encoder encoder;
 
-  public Pivot(VictorSP pivotL, VictorSP pivotR, Encoder encoder) {
+  // TODO ADD ENCODER BACK IN
+
+  public Pivot(VictorSP pivotL, VictorSP pivotR) {
     this.pivotL = pivotL;
     this.pivotR = pivotR;
-    this.encoder = encoder;
+//    this.encoder = encoder;
 
-    resetEncoder();
+//    resetEncoder();
   }
 
   // PIVOT MOTOR METHODS
@@ -42,13 +44,13 @@ public class Pivot extends SubsystemBase {
     this.set(0);
   }
 
-  public double getEncoderTicks() {
-    return encoder.getDistance();
-  }
-
-  public void resetEncoder() {
-    encoder.reset();
-  }
+//  public double getEncoderTicks() {
+//    return encoder.getDistance();
+//  }
+//
+//  public void resetEncoder() {
+//    encoder.reset();
+//  }
 
   @Override
   public void periodic() {

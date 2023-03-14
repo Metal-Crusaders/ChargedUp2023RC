@@ -57,8 +57,8 @@ public class Robot extends TimedRobot {
     timer = new Timer();
 
     CommandScheduler.getInstance().setDefaultCommand(m_robotContainer.drive, m_robotContainer.tankTeleop);
-//    CommandScheduler.getInstance().setDefaultCommand(m_robotContainer.pivot, m_robotContainer.pivotTeleop);
-    CommandScheduler.getInstance().setDefaultCommand(m_robotContainer.elevator, m_robotContainer.elevatorTeleop);
+    CommandScheduler.getInstance().setDefaultCommand(m_robotContainer.pivot, m_robotContainer.pivotTeleop);
+//    CommandScheduler.getInstance().setDefaultCommand(m_robotContainer.elevator, m_robotContainer.elevatorTeleop);
 //    CommandScheduler.getInstance().setDefaultCommand(m_robotContainer.claw, m_robotContainer.clawTeleop);
   }
 
