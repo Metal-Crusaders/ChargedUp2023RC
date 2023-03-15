@@ -1,24 +1,31 @@
 package frc.robot.commands.claw;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.sensors.MyButton;
 import frc.robot.subsystems.Claw;
-import frc.robot.subsystems.ExampleSubsystem;
 
 import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
+
+import static java.lang.Math.abs;
 
 public class ClawTeleop extends CommandBase {
 
     Claw claw;
     BooleanSupplier openBtn, rollerBtn;
+    DoubleSupplier wristInput;
+
+    double DEADBAND = 0.05;
+    double WRIST_FULL_POWER = 0.5;
 
     private boolean toggleClaw, toggleRollers;
 
-    public ClawTeleop(Claw claw, BooleanSupplier openBtn, BooleanSupplier rollerBtn) {
+    public ClawTeleop(Claw claw, BooleanSupplier openBtn, BooleanSupplier rollerBtn, DoubleSupplier wristInput) {
 
         this.claw = claw;
         this.openBtn = openBtn;
         this.rollerBtn = rollerBtn;
+        this.wristInput = wristInput;
 
         toggleClaw = false;
         toggleRollers = false;
@@ -31,6 +38,7 @@ public class ClawTeleop extends CommandBase {
     public void initialize() {
         claw.set(false);
         claw.setRollers(false);
+        claw.resetWristEncoder();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -48,6 +56,21 @@ public class ClawTeleop extends CommandBase {
         claw.set(toggleClaw);
 
         claw.setRollers(toggleRollers);
+
+        double wristSpeed = wristInput.getAsDouble();
+
+        if (abs(wristSpeed) < DEADBAND) {
+            wristSpeed = 0;
+        }
+
+        wristSpeed *= WRIST_FULL_POWER;
+
+
+        SmartDashboard.putBoolean("Claw open?", toggleClaw);
+        SmartDashboard.putBoolean("Rollers on?", toggleRollers);
+        SmartDashboard.putNumber("Wrist Speed", wristSpeed);
+
+        claw.setWrist(wristSpeed);
     }
 
     // Called once the command ends or is interrupted.

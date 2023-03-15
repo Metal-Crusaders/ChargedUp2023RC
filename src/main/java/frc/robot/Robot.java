@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.AddressableLED;
-import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -32,16 +30,14 @@ public class Robot extends TimedRobot {
     m_robotContainer.drive.resetEncoders();
     m_robotContainer.drive.getGyro().reset();
     m_robotContainer.drive.coast();
-//    m_robotContainer.drive.lightsOff();
 
-//    m_robotContainer.pivot.resetEncoder();
-//    m_robotContainer.leftPivot.coast();
-//    m_robotContainer.rightPivot.coast();
+    m_robotContainer.pivot.resetEncoder();
 
     m_robotContainer.elevator.stop();
 
-//    m_robotContainer.claw.pistonOff();
-//    m_robotContainer.claw.setRollers(false);
+    m_robotContainer.claw.pistonOff();
+    m_robotContainer.claw.setRollers(false);
+    m_robotContainer.claw.setWrist(0);
   }
 
   /**
@@ -58,8 +54,8 @@ public class Robot extends TimedRobot {
 
     CommandScheduler.getInstance().setDefaultCommand(m_robotContainer.drive, m_robotContainer.tankTeleop);
     CommandScheduler.getInstance().setDefaultCommand(m_robotContainer.pivot, m_robotContainer.pivotTeleop);
-//    CommandScheduler.getInstance().setDefaultCommand(m_robotContainer.elevator, m_robotContainer.elevatorTeleop);
-//    CommandScheduler.getInstance().setDefaultCommand(m_robotContainer.claw, m_robotContainer.clawTeleop);
+    CommandScheduler.getInstance().setDefaultCommand(m_robotContainer.elevator, m_robotContainer.elevatorTeleop);
+    CommandScheduler.getInstance().setDefaultCommand(m_robotContainer.claw, m_robotContainer.clawTeleop);
   }
 
   /**

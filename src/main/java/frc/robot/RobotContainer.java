@@ -6,7 +6,6 @@ package frc.robot;
 
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.*;
-import edu.wpi.first.wpilibj.motorcontrol.Victor;
 import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -29,7 +28,7 @@ public class RobotContainer {
   public MySparkMax leftFront, leftRear, rightFront, rightRear;
   public VictorSP leftPivot, rightPivot;
   public VictorSP elevatorMotor1, elevatorMotor2;
-  public VictorSP clawRoller1, clawRoller2;
+  public VictorSP clawRoller1, clawRoller2, clawWrist;
 
   // Pneumatics
   DoubleSolenoid clawSolenoid;
@@ -38,6 +37,7 @@ public class RobotContainer {
   public AHRS gyro;
   public DigitalInput elevatorLower, elevatorUpper;
   public Encoder pivotEncoder;
+  public Encoder wristEncoder;
   public AddressableLED leds;
   public AddressableLEDBuffer ledBuf;
 
@@ -77,7 +77,7 @@ public class RobotContainer {
 
     leftPivot = new VictorSP(RobotMap.LEFT_PIVOT);
     rightPivot = new VictorSP(RobotMap.RIGHT_PIVOT);
-//
+
     leftPivot.setInverted(RobotMap.LEFT_PIV_INVERTED);
     rightPivot.setInverted(!RobotMap.LEFT_PIV_INVERTED);
 
@@ -86,30 +86,33 @@ public class RobotContainer {
     elevatorMotor2 = new VictorSP(RobotMap.ELEVATOR_PWM_ID2);
     elevatorMotor2.setInverted(!RobotMap.ELEVATOR_REVERSED);
 
-//    clawRoller1 = new VictorSP(RobotMap.CLAW_ROLLER1);
-//    clawRoller1.setInverted(RobotMap.CLAW_REVERSED);
-//    clawRoller2 = new VictorSP(RobotMap.CLAW_ROLLER2);
-//    clawRoller2.setInverted(!RobotMap.CLAW_REVERSED);
+    clawRoller1 = new VictorSP(RobotMap.CLAW_ROLLER1);
+    clawRoller1.setInverted(RobotMap.CLAW_REVERSED);
+    clawRoller2 = new VictorSP(RobotMap.CLAW_ROLLER2);
+    clawRoller2.setInverted(!RobotMap.CLAW_REVERSED);
+
+    clawWrist = new VictorSP(RobotMap.CLAW_WRIST);
 //
-//    // Pneumatics
-//    clawSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, RobotMap.CLAW_IN, RobotMap.CLAW_OUT);
+    // Pneumatics
+    clawSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, RobotMap.CLAW_IN, RobotMap.CLAW_OUT);
 
     // Sensors
     gyro = new AHRS(SPI.Port.kMXP);
     elevatorLower = new DigitalInput(RobotMap.ELEVATOR_LOWER);
     elevatorUpper = new DigitalInput(RobotMap.ELEVATOR_UPPER);
-//    pivotEncoder = new Encoder(RobotMap.ENCODER_ID_IN, RobotMap.ENCODER_ID_OUT);
+    pivotEncoder = new Encoder(RobotMap.PIVOT_ENCODER_IN, RobotMap.PIVOT_ENCODER_OUT);
+    wristEncoder = new Encoder(RobotMap.WRIST_ENCODER_IN, RobotMap.WRIST_ENCODER_OUT);
 
     // Subsystems
     drive = new TankDrive(leftFront, rightFront, gyro);
-    pivot = new Pivot(leftPivot, rightPivot);
-//    elevator = new Elevator(elevatorMotor1, elevatorMotor2, elevatorLower, elevatorUpper);
-//    claw = new Claw(clawSolenoid, clawRoller1, clawRoller2);
+    pivot = new Pivot(leftPivot, rightPivot, pivotEncoder);
+    elevator = new Elevator(elevatorMotor1, elevatorMotor2, elevatorLower, elevatorUpper);
+    claw = new Claw(clawSolenoid, clawRoller1, clawRoller2, clawWrist, wristEncoder);
 
     // OI + Buttons
     oi = new OI();
-//    clawOpenBtn = new MyButton(oi.getOperatorXbox(), OI.XBOX_A);
-//    clawRollerBtn = new MyButton(oi.getOperatorXbox(), OI.XBOX_X);
+    clawOpenBtn = new MyButton(oi.getOperatorXbox(), OI.XBOX_A);
+    clawRollerBtn = new MyButton(oi.getOperatorXbox(), OI.XBOX_X);
     purpleBtn = new MyButton(oi.getDriverXbox(), OI.XBOX_A);
     yellowBtn = new MyButton(oi.getDriverXbox(), OI.XBOX_B);
 
@@ -120,8 +123,8 @@ public class RobotContainer {
             purpleBtn::isPressed, yellowBtn::isPressed
     );
     pivotTeleop = new RawPivotTeleop(pivot, oi::getOperatorXboxRightY);
-//    elevatorTeleop = new RawElevatorTeleop(elevator, oi::getOperatorXboxLeftY);
-//    clawTeleop = new ClawTeleop(claw, clawOpenBtn::isPressed, clawRollerBtn::isPressed);
+    elevatorTeleop = new RawElevatorTeleop(elevator, oi::getOperatorXboxLeftY);
+    clawTeleop = new ClawTeleop(claw, clawOpenBtn::isPressed, clawRollerBtn::isPressed, oi::getOperatorXboxRightX);
 
     // presets here
 
