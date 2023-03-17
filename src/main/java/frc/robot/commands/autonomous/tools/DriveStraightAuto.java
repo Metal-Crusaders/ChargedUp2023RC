@@ -25,6 +25,7 @@ public class DriveStraightAuto extends CommandBase {
     double kD = 0;
 
     public DriveStraightAuto(TankDrive driveTrain, double target) {
+        // NOTE: "target" needs to be encoder ticks: to make it inches, uncomment the two lines
         super();
         this.driveTrain = driveTrain;
         this.target = target;
