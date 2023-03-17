@@ -13,6 +13,10 @@ public class MyButton extends JoystickButton {
         this.buttonNumber = buttonNumber;
     }
 
+    public boolean getRaw() {
+        return hid.getRawButton(buttonNumber);
+    }
+
     public boolean isPressed() {
         return hid.getRawButtonPressed(buttonNumber);
     }

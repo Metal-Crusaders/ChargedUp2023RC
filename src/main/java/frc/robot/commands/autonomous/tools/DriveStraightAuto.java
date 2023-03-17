@@ -13,8 +13,7 @@ public class DriveStraightAuto extends CommandBase {
     private final TankDrive driveTrain;
 
     private final double FULL_POWER = 0.25;
-    private final double PRECISION = 60;
-    // TODO get better precision value here (based on good math estimate)
+    private double PRECISION;
     double target;
     double error = 0;
     double current = 0;
@@ -29,8 +28,8 @@ public class DriveStraightAuto extends CommandBase {
         super();
         this.driveTrain = driveTrain;
         this.target = target;
-        this.target /= TankDrive.NUM_INCHES_PER_ROTATION;
-        this.target *= TankDrive.NUM_TICKS_PER_ROTATION;
+//        this.target /= TankDrive.NUM_INCHES_PER_ROTATION;
+//        this.target *= TankDrive.NUM_TICKS_PER_ROTATION;
         this.pidController = new PIDController(kP, kI, kD);
         pidController.setSetpoint(this.target);
         addRequirements(driveTrain);
@@ -40,6 +39,8 @@ public class DriveStraightAuto extends CommandBase {
     public void initialize() {
         driveTrain.resetEncoders();
         pidController.reset();
+        error = 0;
+        PRECISION = target / 3;
     }
 
     @Override

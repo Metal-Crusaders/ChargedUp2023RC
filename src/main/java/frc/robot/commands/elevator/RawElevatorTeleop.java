@@ -12,12 +12,13 @@ public class RawElevatorTeleop extends CommandBase {
     public static final double DEADBAND = 0.15;
 
     private Elevator elevator;
-    private DoubleSupplier elevatorInput;
+    private DoubleSupplier forwardInput, backwardInput;
 
-    public RawElevatorTeleop(Elevator elevator, DoubleSupplier elevatorInput) {
+    public RawElevatorTeleop(Elevator elevator, DoubleSupplier forwardInput, DoubleSupplier backwardInput) {
 
         this.elevator = elevator;
-        this.elevatorInput = elevatorInput;
+        this.forwardInput = forwardInput;
+        this.backwardInput = backwardInput;
 
         addRequirements(elevator);
     }
@@ -32,7 +33,9 @@ public class RawElevatorTeleop extends CommandBase {
 
         double elevatorPower = 1;
 
-        double speed = Math.pow(elevatorInput.getAsDouble(), elevatorPower) * FULL_POWER;
+        double rawInp = forwardInput.getAsDouble() - backwardInput.getAsDouble();
+
+        double speed = Math.pow(rawInp, elevatorPower) * FULL_POWER;
         if (speed < DEADBAND && speed > -DEADBAND) {
             speed = 0;
         }

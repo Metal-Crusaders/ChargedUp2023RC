@@ -52,16 +52,12 @@ public class Elevator extends SubsystemBase {
     }
 
     public boolean upperLimitTriggered() {
-        return upperLimit.get();
-//        return false;
+//        return upperLimit.get();
+        return false;
     }
 
     public boolean lowerLimitTriggered() {
-        return lowerLimit.get();
-//        return false;
-    }
-
-    public boolean lowerCurrentTriggered() {
-        
+//        return lowerLimit.get();
+        return false;
     }
 }

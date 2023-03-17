@@ -11,6 +11,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.autonomous.ChargePanelAuto;
+import frc.robot.commands.autonomous.LeaveAndChargeAuto;
+import frc.robot.commands.autonomous.tools.DoNothing;
+import frc.robot.commands.autonomous.tools.DriveStraightAuto;
 import frc.robot.commands.claw.ClawTeleop;
 import frc.robot.commands.elevator.RawElevatorTeleop;
 import frc.robot.commands.tankdrive.RawTankTeleop;
@@ -49,7 +52,7 @@ public class RobotContainer {
 
   // OI + Buttons
   public OI oi;
-  public MyButton clawOpenBtn, clawRollerBtn;
+  public MyButton clawOpenBtn, clawRollerBtn, clawRollerOppBtn;
   public MyButton purpleBtn, yellowBtn;
 
   // Commands
@@ -59,7 +62,10 @@ public class RobotContainer {
   public ClawTeleop clawTeleop;
 
   // Auto Commands
+  DoNothing doNothingAuto;
+  DriveStraightAuto exitCommunityAuto;
   ChargePanelAuto chargePanelAuto;
+  LeaveAndChargeAuto leaveAndCharge;
 
   SendableChooser<Command> chooser;
 
@@ -113,6 +119,7 @@ public class RobotContainer {
     oi = new OI();
     clawOpenBtn = new MyButton(oi.getOperatorXbox(), OI.XBOX_A);
     clawRollerBtn = new MyButton(oi.getOperatorXbox(), OI.XBOX_X);
+    clawRollerOppBtn = new MyButton(oi.getOperatorXbox(), OI.XBOX_Y);
     purpleBtn = new MyButton(oi.getDriverXbox(), OI.XBOX_A);
     yellowBtn = new MyButton(oi.getDriverXbox(), OI.XBOX_B);
 
@@ -122,20 +129,29 @@ public class RobotContainer {
             oi::getDriverXboxLeftTrigger, oi::getDriverXboxRightTrigger, oi::getDriverXboxLeftX,
             purpleBtn::isPressed, yellowBtn::isPressed
     );
-    pivotTeleop = new RawPivotTeleop(pivot, oi::getOperatorXboxRightY);
-    elevatorTeleop = new RawElevatorTeleop(elevator, oi::getOperatorXboxLeftY);
-    clawTeleop = new ClawTeleop(claw, clawOpenBtn::isPressed, clawRollerBtn::isPressed, oi::getOperatorXboxRightX);
+    pivotTeleop = new RawPivotTeleop(pivot, oi::getOperatorXboxLeftY);
+    elevatorTeleop = new RawElevatorTeleop(elevator, oi::getOperatorXboxRightTrigger, oi::getOperatorXboxLeftTrigger);
+    clawTeleop = new ClawTeleop(
+            claw,
+            clawOpenBtn::isPressed, clawRollerBtn::getRaw, clawRollerOppBtn::getRaw, oi::getOperatorXboxRightY
+    );
 
     // presets here
 
     // Auto Commands
+    doNothingAuto = new DoNothing();
+    exitCommunityAuto = new DriveStraightAuto(drive, 30000); // TODO need to verify that this is OK
     chargePanelAuto = new ChargePanelAuto(drive, false);
+    leaveAndCharge = new LeaveAndChargeAuto(drive);
 
     // Sendable Chooser:
     chooser = new SendableChooser<>();
     SmartDashboard.putData(chooser);
 
+    chooser.addOption("Do Nothing Auto", doNothingAuto);
+    chooser.addOption("Exit Community Auto", exitCommunityAuto);
     chooser.addOption("Charge Panel Middle Auto", chargePanelAuto);
+    chooser.addOption("Leave Community + Charge Auto", leaveAndCharge);
 
     configureButtonBindings();
   }

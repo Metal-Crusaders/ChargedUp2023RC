@@ -10,7 +10,7 @@ public class BalanceAuto extends CommandBase {
 
     private final double deadband = 1;
 
-    private final double FULL_POWER = 0.06;
+    private final double FULL_POWER = 0.075;
 
     private final double kP = (1.0 / 12);
 

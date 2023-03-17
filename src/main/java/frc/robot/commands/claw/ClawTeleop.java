@@ -12,23 +12,23 @@ import static java.lang.Math.abs;
 public class ClawTeleop extends CommandBase {
 
     Claw claw;
-    BooleanSupplier openBtn, rollerBtn;
+    BooleanSupplier openBtn, rollerBtn, oppRollerBtn;
     DoubleSupplier wristInput;
 
     double DEADBAND = 0.05;
     double WRIST_FULL_POWER = 0.5;
 
-    private boolean toggleClaw, toggleRollers;
+    private boolean toggleClaw;
 
-    public ClawTeleop(Claw claw, BooleanSupplier openBtn, BooleanSupplier rollerBtn, DoubleSupplier wristInput) {
+    public ClawTeleop(Claw claw, BooleanSupplier openBtn, BooleanSupplier rollerBtn, BooleanSupplier oppRollerBtn, DoubleSupplier wristInput) {
 
         this.claw = claw;
         this.openBtn = openBtn;
         this.rollerBtn = rollerBtn;
+        this.oppRollerBtn = oppRollerBtn;
         this.wristInput = wristInput;
 
         toggleClaw = false;
-        toggleRollers = false;
 
         addRequirements(claw);
     }
@@ -38,6 +38,7 @@ public class ClawTeleop extends CommandBase {
     public void initialize() {
         claw.set(false);
         claw.setRollers(false);
+        claw.setRollersOpposite(false);
         claw.resetWristEncoder();
     }
 
@@ -49,13 +50,12 @@ public class ClawTeleop extends CommandBase {
             toggleClaw = !toggleClaw;
         }
 
-        if (rollerBtn.getAsBoolean()) {
-            toggleRollers = !toggleRollers;
-        }
-
         claw.set(toggleClaw);
 
-        claw.setRollers(toggleRollers);
+        claw.setRollers(rollerBtn.getAsBoolean());
+        if (!rollerBtn.getAsBoolean()) {
+            claw.setRollersOpposite(oppRollerBtn.getAsBoolean());
+        }
 
         double wristSpeed = wristInput.getAsDouble();
 
@@ -65,9 +65,9 @@ public class ClawTeleop extends CommandBase {
 
         wristSpeed *= WRIST_FULL_POWER;
 
-
         SmartDashboard.putBoolean("Claw open?", toggleClaw);
-        SmartDashboard.putBoolean("Rollers on?", toggleRollers);
+        SmartDashboard.putBoolean("Rollers on?", rollerBtn.getAsBoolean());
+        SmartDashboard.putBoolean("Anti_speed rollers?", oppRollerBtn.getAsBoolean());
         SmartDashboard.putNumber("Wrist Speed", wristSpeed);
 
         claw.setWrist(wristSpeed);
