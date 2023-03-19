@@ -141,7 +141,7 @@ public class RobotContainer {
 
     // Auto Commands
     doNothingAuto = new DoNothing();
-    exitCommunityAuto = new DriveStraightAuto(drive, 31000);
+    exitCommunityAuto = new DriveStraightAuto(drive, 30500);
     chargePanelAuto = new ChargePanelAuto(drive, false);
     leaveAndCharge = new LeaveAndChargeAuto(drive);
 

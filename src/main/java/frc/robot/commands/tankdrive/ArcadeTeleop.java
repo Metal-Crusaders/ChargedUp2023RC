@@ -11,16 +11,16 @@ public class ArcadeTeleop extends CommandBase {
 
     private boolean filterEnabled;
 
-    private DoubleSupplier leftInput, rightInput, steeringInput;
-    private BooleanSupplier purpleInput, yellowInput;
+    private final DoubleSupplier leftInput, rightInput, steeringInput;
+    private final BooleanSupplier purpleInput, yellowInput;
 
     private boolean purpleToggle, yellowToggle;
 
     private final TankDrive driveTrain;
 
-    private final double DEADZONE = 0.12;
-    private final double speedSensitivity = 0.4;
-    private final double TURNING_GAIN = 1; // TODO mess around with this
+    protected final double DEADZONE = 0.12;
+    private final double speedSensitivity = 0.85;
+    protected final double TURNING_GAIN = 1; // TODO mess around with this
 
     public ArcadeTeleop(
             TankDrive driveTrain,
@@ -65,8 +65,8 @@ public class ArcadeTeleop extends CommandBase {
             steering = 0;
         }
 
-        double throttle = rightInput.getAsDouble() - leftInput.getAsDouble();
-        throttle *= 0.4;
+        double throttle = Math.pow((rightInput.getAsDouble() - leftInput.getAsDouble()), speedPower);
+        throttle *= speedSensitivity;
 
         double rRawPower = throttle - steering;
         double lRawPower = throttle + steering;

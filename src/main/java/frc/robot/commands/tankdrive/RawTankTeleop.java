@@ -46,7 +46,7 @@ public class RawTankTeleop extends CommandBase {
     @Override
     public void execute() {
         double speedSensitivity = 1;
-        double steeringSensitivity = 0.4;
+        double steeringSensitivity = 0.6;
         double speedPower = 2;
         double steeringPower = 1; // TODO change this depending on driver interest
 
