@@ -98,6 +98,7 @@ public class RobotContainer {
     clawRoller2.setInverted(!RobotMap.CLAW_REVERSED);
 
     clawWrist = new VictorSP(RobotMap.CLAW_WRIST);
+    clawWrist.setInverted(RobotMap.WRIST_REVERSED);
 //
     // Pneumatics
     clawSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, RobotMap.CLAW_IN, RobotMap.CLAW_OUT);
@@ -140,7 +141,7 @@ public class RobotContainer {
 
     // Auto Commands
     doNothingAuto = new DoNothing();
-    exitCommunityAuto = new DriveStraightAuto(drive, 30000); // TODO need to verify that this is OK
+    exitCommunityAuto = new DriveStraightAuto(drive, 31000);
     chargePanelAuto = new ChargePanelAuto(drive, false);
     leaveAndCharge = new LeaveAndChargeAuto(drive);
 

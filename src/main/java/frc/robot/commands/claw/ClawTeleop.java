@@ -53,7 +53,8 @@ public class ClawTeleop extends CommandBase {
         claw.set(toggleClaw);
 
         claw.setRollers(rollerBtn.getAsBoolean());
-        if (!rollerBtn.getAsBoolean()) {
+
+        if (!(rollerBtn.getAsBoolean())) {
             claw.setRollersOpposite(oppRollerBtn.getAsBoolean());
         }
 

@@ -21,6 +21,7 @@ public final class RobotMap {
     public static final boolean LEFT_PIV_INVERTED = true;
     public static final boolean ELEVATOR_REVERSED = false;
     public static final boolean CLAW_REVERSED = false;
+    public static final boolean WRIST_REVERSED = true;
 
     // PWM / DIO
     public static final int LEFT_PIVOT = 5;
@@ -29,7 +30,6 @@ public final class RobotMap {
     public static final int ELEVATOR_PWM_ID2 = 8;
     public static final int ELEVATOR_LOWER = 6; // TODO change these for limit switch
     public static final int ELEVATOR_UPPER = 7;
-
     public static final int PIVOT_ENCODER_IN = 4;
     public static final int PIVOT_ENCODER_OUT = 5;
     public static final int CLAW_ROLLER1 = 1;

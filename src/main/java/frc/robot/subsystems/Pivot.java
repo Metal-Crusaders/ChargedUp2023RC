@@ -15,7 +15,7 @@ public class Pivot extends SubsystemBase {
   public static final int PIVOT_GEAR_RATIO = 27;
 
   public static final int LOWER_BOUND = -1500;
-  public static final int UPPER_BOUND = 420; // TODO CHANGE THESE
+  public static final int UPPER_BOUND = 4200; // TODO WE NEED TO CHANGE BOTH OF THESE ASSUMING WE START FROM CORRECT POSITION
   private final VictorSP pivotL, pivotR;
   private final Encoder encoder;
 

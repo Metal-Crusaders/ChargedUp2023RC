@@ -8,9 +8,8 @@ import java.util.function.DoubleSupplier;
 
 public class RawPivotTeleop extends CommandBase {
 
-    public static final int LOWER_BOUND = 0, UPPER_BOUND = 420;
-    public static final double FULL_POWER = 0.25;
-    public static final double DEADZONE = 0.05;
+    public static final double FULL_POWER = 0.35;
+    public static final double DEADZONE = 0.085;
 
     private Pivot pivot;
     private DoubleSupplier pivotInput;
@@ -30,7 +29,7 @@ public class RawPivotTeleop extends CommandBase {
 
     @Override
     public void execute() {
-        double speed = pivotInput.getAsDouble();
+        double speed = pivotInput.getAsDouble() * FULL_POWER;
         SmartDashboard.putNumber("Pivot Speed", speed);
         SmartDashboard.putNumber("Pivot Encoder Ticks", pivot.getEncoderTicks());
 
@@ -38,7 +37,7 @@ public class RawPivotTeleop extends CommandBase {
             speed = 0;
         }
 
-        pivot.set(speed * FULL_POWER);
+        pivot.set(speed);
     }
 
     @Override
