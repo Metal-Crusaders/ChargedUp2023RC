@@ -18,7 +18,7 @@ public class Claw extends SubsystemBase {
 
     public static final double LOWER_BOUND = 0, UPPER_BOUND = 420;
 
-    public static final double INTAKE_POWER = 0.35;
+    public static final double SUCK_POWER = 0.25, SPIT_POWER = 0.85;
 
     public Claw(DoubleSolenoid piston, VictorSP roller1, VictorSP roller2, VictorSP wrist, Encoder wristEncoder) {
         this.piston = piston;
@@ -49,11 +49,11 @@ public class Claw extends SubsystemBase {
             this.roller1.set(0);
             this.roller2.set(0);
         } else if (on) {
-            this.roller1.set(INTAKE_POWER);
-            this.roller2.set(-INTAKE_POWER);
+            this.roller1.set(SUCK_POWER);
+            this.roller2.set(-SUCK_POWER);
         } else {
-            this.roller1.set(-INTAKE_POWER);
-            this.roller2.set(INTAKE_POWER);
+            this.roller1.set(-SPIT_POWER);
+            this.roller2.set(SPIT_POWER);
         }
     }
 
@@ -78,5 +78,4 @@ public class Claw extends SubsystemBase {
     public void resetWristEncoder() {
         wristEncoder.reset();
     }
-
 }
