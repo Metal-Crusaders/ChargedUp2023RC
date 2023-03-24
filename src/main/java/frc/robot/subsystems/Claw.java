@@ -16,9 +16,9 @@ public class Claw extends SubsystemBase {
     VictorSP wrist;
     Encoder wristEncoder;
 
-    public static final int LOWER_BOUND = 0, UPPER_BOUND = 420;
+    public static final double LOWER_BOUND = 0, UPPER_BOUND = 420;
 
-    public final static double ROLLER_SPEED = 0.35;
+    public static final double INTAKE_POWER = 0.35;
 
     public Claw(DoubleSolenoid piston, VictorSP roller1, VictorSP roller2, VictorSP wrist, Encoder wristEncoder) {
         this.piston = piston;
@@ -44,23 +44,16 @@ public class Claw extends SubsystemBase {
         return (piston.get() == DoubleSolenoid.Value.kForward);
     }
 
-    public void setRollers(boolean on) {
-        if (on) {
-            this.roller1.set(ROLLER_SPEED);
-            this.roller2.set(-ROLLER_SPEED);
-        } else {
+    public void setRollers(boolean on, boolean off) {
+        if (on == off) {
             this.roller1.set(0);
             this.roller2.set(0);
-        }
-    }
-
-    public void setRollersOpposite(boolean on) {
-        if (on) {
-            this.roller1.set(-ROLLER_SPEED / 5);
-            this.roller2.set(ROLLER_SPEED / 5);
+        } else if (on) {
+            this.roller1.set(INTAKE_POWER);
+            this.roller2.set(-INTAKE_POWER);
         } else {
-            this.roller1.set(0);
-            this.roller2.set(0);
+            this.roller1.set(-INTAKE_POWER);
+            this.roller2.set(INTAKE_POWER);
         }
     }
 

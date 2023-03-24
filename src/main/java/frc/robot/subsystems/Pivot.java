@@ -11,9 +11,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Pivot extends SubsystemBase {
 
-  public static final int TICKS_PER_ROTATION = 420; // TODO change this
-  public static final int PIVOT_GEAR_RATIO = 27;
-
   public static final int LOWER_BOUND = -1500;
   public static final int UPPER_BOUND = 4200; // TODO WE NEED TO CHANGE BOTH OF THESE ASSUMING WE START FROM CORRECT POSITION
   private final VictorSP pivotL, pivotR;

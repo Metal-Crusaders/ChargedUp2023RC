@@ -8,6 +8,8 @@ public class OI {
     public static int XBOX_B = 2;
     public static int XBOX_X = 3;
     public static int XBOX_Y = 4;
+    public static int XBOX_LB = 5;
+    public static int XBOX_RB = 6;
 
     private XboxController driver, operator;
 

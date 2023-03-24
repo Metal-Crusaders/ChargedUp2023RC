@@ -12,19 +12,24 @@ public class RawTankTeleop extends CommandBase {
     private boolean filterEnabled;
 
     private DoubleSupplier leftInput, rightInput, steeringInput;
-    private BooleanSupplier purpleInput, yellowInput;
+    private BooleanSupplier sensiInput, purpleInput, yellowInput;
 
-    private boolean purpleToggle, yellowToggle;
+    private boolean sensiToggle, purpleToggle, yellowToggle;
 
     private final TankDrive driveTrain;
 
-    private final double DEADZONE = 0.12;
+    private final double DEADZONE = 0.08;
+
+    double speedSensitivity = 0.4;
+    double speedPower = 2;
+    double steeringPower = 1; // TODO change this depending on driver interest
 
     public RawTankTeleop(
             TankDrive driveTrain,
             DoubleSupplier leftInput,
             DoubleSupplier rightInput,
             DoubleSupplier steeringInput,
+            BooleanSupplier sensiInput,
             BooleanSupplier purpleInput,
             BooleanSupplier yellowInput
     ) {
@@ -33,6 +38,7 @@ public class RawTankTeleop extends CommandBase {
         this.leftInput = leftInput;
         this.rightInput = rightInput;
         this.steeringInput = steeringInput;
+        this.sensiInput = sensiInput;
         this.purpleInput = purpleInput;
         this.yellowInput = yellowInput;
 
@@ -45,20 +51,16 @@ public class RawTankTeleop extends CommandBase {
 
     @Override
     public void execute() {
-        double speedSensitivity = 1;
-        double steeringSensitivity = 0.6;
-        double speedPower = 2;
-        double steeringPower = 1; // TODO change this depending on driver interest
 
-        double steering = Math.pow(steeringInput.getAsDouble(), steeringPower) * steeringSensitivity;
+        double steering = Math.pow(steeringInput.getAsDouble(), steeringPower) * speedSensitivity;
         if (steering > -DEADZONE && steering < DEADZONE) {
             steering = 0;
         }
 
         double throttle = rightInput.getAsDouble() - leftInput.getAsDouble();
 
-        double rRawPower = (throttle - (throttle * steering)) * speedSensitivity;
-        double lRawPower = (throttle + (throttle * steering)) * speedSensitivity;
+        double rRawPower = (throttle - steering) * speedSensitivity;
+        double lRawPower = (throttle + steering) * speedSensitivity;
 
         if (throttle == 0) {
             rRawPower = -steering;
@@ -75,6 +77,7 @@ public class RawTankTeleop extends CommandBase {
 
         SmartDashboard.putNumber("steering", steering);
         SmartDashboard.putNumber("throttle", throttle);
+        SmartDashboard.putBoolean("fast mode toggled", sensiToggle);
         SmartDashboard.putBoolean("purple toggle", purpleToggle);
         SmartDashboard.putBoolean("yellow toggle", yellowToggle);
 
@@ -84,6 +87,16 @@ public class RawTankTeleop extends CommandBase {
 
         if (yellowInput.getAsBoolean()) {
             yellowToggle = !yellowToggle;
+        }
+
+        if (sensiInput.getAsBoolean()) {
+            sensiToggle = !sensiToggle;
+        }
+
+        if (sensiToggle && speedSensitivity == 0.85) {
+            speedSensitivity = 0.4;
+        } else {
+            speedSensitivity = 0.85;
         }
 
         if (purpleToggle) {

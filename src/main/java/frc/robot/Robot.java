@@ -36,7 +36,7 @@ public class Robot extends TimedRobot {
     m_robotContainer.elevator.stop();
 
     m_robotContainer.claw.pistonOff();
-    m_robotContainer.claw.setRollers(false);
+    m_robotContainer.claw.setRollers(false, false);
     m_robotContainer.claw.setWrist(0);
   }
 

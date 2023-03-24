@@ -48,7 +48,7 @@ public class MyVictorSPX extends WPI_VictorSPX {
         super(channel);
         super.setInverted(reversed);
         percentOutputFilter = new Filter(DEFAULT_PERCENT_FILTER);
-        tbEncoder = new Encoder(digIn, digOut, reversed, CounterBase.EncodingType.k4X); // TODO change k4X if necessary
+        tbEncoder = new Encoder(digIn, digOut, reversed, CounterBase.EncodingType.k4X);
         resetEncoder();
     }
     public void set(double speed) {

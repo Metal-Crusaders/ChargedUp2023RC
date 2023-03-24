@@ -10,7 +10,7 @@ import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Pivot;
 
 /** An example command that uses an example subsystem. */
-public class ExamplePreset extends CommandBase {
+public class ContinuousPreset extends CommandBase {
 
   Pivot pivot;
   Elevator elevator;
@@ -32,7 +32,7 @@ public class ExamplePreset extends CommandBase {
   double ELEVATOR_FULL_POWER = 0.5;
   double WRIST_FULL_POWER = 0.1;
 
-  public ExamplePreset(Pivot pivot, Elevator elevator, Claw claw, boolean elevatorIntent, double pivotTicks, double clawTicks) {
+  public ContinuousPreset(Pivot pivot, Elevator elevator, Claw claw, boolean elevatorIntent, double pivotTicks, double clawTicks) {
     this.pivot = pivot;
     this.elevator = elevator;
     this.elevatorIntent = elevatorIntent;
@@ -52,18 +52,26 @@ public class ExamplePreset extends CommandBase {
   public void execute() {
     if (elevatorIntent && !(elevator.upperLimitTriggered())) {
       elevator.set(ELEVATOR_FULL_POWER);
-    } else if (Math.abs(pivot.getEncoderTicks() - pivotTicks) <= DEADBAND_PIVOT) {
-      elevator.stop();
-
-      pivotSpeed = (pivot.getEncoderTicks() - pivotTicks) * kPPivot * PIVOT_FULL_POWER;
-
-      pivot.set(pivotSpeed);
     } else if (!elevatorIntent && !(elevator.lowerLimitTriggered())) {
       pivot.stop();
       elevator.set(-ELEVATOR_FULL_POWER);
-    } else if (Math.abs(claw.getWristTicks() - clawTicks) <= DEADBAND_CLAW) {
+    } else {
+      elevator.stop();
+    }
+
+    if (Math.abs(pivot.getEncoderTicks() - pivotTicks) <= DEADBAND_PIVOT) {
+      pivotSpeed = (pivot.getEncoderTicks() - pivotTicks) * kPPivot * PIVOT_FULL_POWER;
+      pivot.set(pivotSpeed);
+    } else {
+      pivot.stop();
+    }
+
+    if (Math.abs(claw.getWristTicks() - clawTicks) <= DEADBAND_CLAW) {
       // once everything else is done, do claw stuff
       clawSpeed = (claw.getWristTicks() - clawTicks) * kPClaw * WRIST_FULL_POWER;
+      claw.setWrist(clawSpeed);
+    } else {
+      claw.setWrist(0);
     }
   }
 

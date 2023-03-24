@@ -16,6 +16,7 @@ import frc.robot.commands.autonomous.tools.DoNothing;
 import frc.robot.commands.autonomous.tools.DriveStraightAuto;
 import frc.robot.commands.claw.ClawTeleop;
 import frc.robot.commands.elevator.RawElevatorTeleop;
+import frc.robot.commands.tankdrive.ArcadeTeleop;
 import frc.robot.commands.tankdrive.RawTankTeleop;
 import frc.robot.commands.pivot.RawPivotTeleop;
 import frc.robot.motor.MySparkMax;
@@ -38,9 +39,7 @@ public class RobotContainer {
 
   // Sensors
   public AHRS gyro;
-  public DigitalInput elevatorLower, elevatorUpper;
-  public Encoder pivotEncoder;
-  public Encoder wristEncoder;
+  public Encoder pivotEncoder, elevatorEncoder, wristEncoder;
   public AddressableLED leds;
   public AddressableLEDBuffer ledBuf;
 
@@ -53,7 +52,7 @@ public class RobotContainer {
   // OI + Buttons
   public OI oi;
   public MyButton clawOpenBtn, clawRollerBtn, clawRollerOppBtn;
-  public MyButton purpleBtn, yellowBtn;
+  public MyButton sensitivityShifter, purpleBtn, yellowBtn;
 
   // Commands
   public RawTankTeleop tankTeleop;
@@ -105,30 +104,30 @@ public class RobotContainer {
 
     // Sensors
     gyro = new AHRS(SPI.Port.kMXP);
-    elevatorLower = new DigitalInput(RobotMap.ELEVATOR_LOWER);
-    elevatorUpper = new DigitalInput(RobotMap.ELEVATOR_UPPER);
     pivotEncoder = new Encoder(RobotMap.PIVOT_ENCODER_IN, RobotMap.PIVOT_ENCODER_OUT);
+    elevatorEncoder = new Encoder(RobotMap.ELEVATOR_ENCODER_IN, RobotMap.ELEVATOR_ENCODER_OUT);
     wristEncoder = new Encoder(RobotMap.WRIST_ENCODER_IN, RobotMap.WRIST_ENCODER_OUT);
 
     // Subsystems
     drive = new TankDrive(leftFront, rightFront, gyro);
     pivot = new Pivot(leftPivot, rightPivot, pivotEncoder);
-    elevator = new Elevator(elevatorMotor1, elevatorMotor2, elevatorLower, elevatorUpper);
+    elevator = new Elevator(elevatorMotor1, elevatorMotor2, elevatorEncoder);
     claw = new Claw(clawSolenoid, clawRoller1, clawRoller2, clawWrist, wristEncoder);
 
     // OI + Buttons
     oi = new OI();
     clawOpenBtn = new MyButton(oi.getOperatorXbox(), OI.XBOX_A);
-    clawRollerBtn = new MyButton(oi.getOperatorXbox(), OI.XBOX_X);
-    clawRollerOppBtn = new MyButton(oi.getOperatorXbox(), OI.XBOX_Y);
-    purpleBtn = new MyButton(oi.getDriverXbox(), OI.XBOX_A);
+    clawRollerBtn = new MyButton(oi.getOperatorXbox(), OI.XBOX_LB);
+    clawRollerOppBtn = new MyButton(oi.getOperatorXbox(), OI.XBOX_RB);
+    sensitivityShifter = new MyButton(oi.getDriverXbox(), OI.XBOX_A);
+    purpleBtn = new MyButton(oi.getDriverXbox(), OI.XBOX_X);
     yellowBtn = new MyButton(oi.getDriverXbox(), OI.XBOX_B);
 
     // Commands
     tankTeleop = new RawTankTeleop(
             drive,
             oi::getDriverXboxLeftTrigger, oi::getDriverXboxRightTrigger, oi::getDriverXboxLeftX,
-            purpleBtn::isPressed, yellowBtn::isPressed
+            sensitivityShifter::isPressed, purpleBtn::isPressed, yellowBtn::isPressed
     );
     pivotTeleop = new RawPivotTeleop(pivot, oi::getOperatorXboxLeftY);
     elevatorTeleop = new RawElevatorTeleop(elevator, oi::getOperatorXboxRightTrigger, oi::getOperatorXboxLeftTrigger);

@@ -37,8 +37,7 @@ public class ClawTeleop extends CommandBase {
     @Override
     public void initialize() {
         claw.set(false);
-        claw.setRollers(false);
-        claw.setRollersOpposite(false);
+        claw.setRollers(false, false);
         claw.resetWristEncoder();
     }
 
@@ -52,16 +51,12 @@ public class ClawTeleop extends CommandBase {
 
         claw.set(toggleClaw);
 
-        claw.setRollers(rollerBtn.getAsBoolean());
-
-        if (!(rollerBtn.getAsBoolean())) {
-            claw.setRollersOpposite(oppRollerBtn.getAsBoolean());
-        }
+        claw.setRollers(rollerBtn.getAsBoolean(), oppRollerBtn.getAsBoolean());
 
         double wristSpeed = wristInput.getAsDouble();
 
         if (abs(wristSpeed) < DEADBAND) {
-            wristSpeed = 0;
+            wristSpeed = 0.1;
         }
 
         wristSpeed *= WRIST_FULL_POWER;
@@ -78,7 +73,7 @@ public class ClawTeleop extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         claw.set(false);
-        claw.setRollers(false);
+        claw.setRollers(false, false);
     }
 
     // Returns true when the command should end.

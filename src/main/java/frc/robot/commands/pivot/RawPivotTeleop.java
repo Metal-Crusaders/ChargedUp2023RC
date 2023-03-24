@@ -34,7 +34,7 @@ public class RawPivotTeleop extends CommandBase {
         SmartDashboard.putNumber("Pivot Encoder Ticks", pivot.getEncoderTicks());
 
         if (speed < DEADZONE && speed > -DEADZONE) {
-            speed = 0;
+            speed = 0.09;
         }
 
         pivot.set(speed);
