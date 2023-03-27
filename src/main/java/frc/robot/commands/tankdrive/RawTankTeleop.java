@@ -18,9 +18,11 @@ public class RawTankTeleop extends CommandBase {
 
     private final TankDrive driveTrain;
 
-    private final double DEADZONE = 0.08;
+    private final double DEADZONE = 0.12;
+    private final double LOW_SPEED = 0.4;
+    private final double HIGH_SPEED = 0.85;
 
-    double speedSensitivity = 0.4;
+    double speedSensitivity = LOW_SPEED;
     double speedPower = 2;
     double steeringPower = 1; // TODO change this depending on driver interest
 
@@ -77,6 +79,9 @@ public class RawTankTeleop extends CommandBase {
 
         SmartDashboard.putNumber("steering", steering);
         SmartDashboard.putNumber("throttle", throttle);
+        SmartDashboard.putNumber("speedSense", speedSensitivity);
+        SmartDashboard.putNumber("lpower", lpower);
+        SmartDashboard.putNumber("rpower", rpower);
         SmartDashboard.putBoolean("fast mode toggled", sensiToggle);
         SmartDashboard.putBoolean("purple toggle", purpleToggle);
         SmartDashboard.putBoolean("yellow toggle", yellowToggle);
@@ -90,13 +95,11 @@ public class RawTankTeleop extends CommandBase {
         }
 
         if (sensiInput.getAsBoolean()) {
-            sensiToggle = !sensiToggle;
-        }
-
-        if (sensiToggle && speedSensitivity == 0.85) {
-            speedSensitivity = 0.4;
-        } else {
-            speedSensitivity = 0.85;
+            if (speedSensitivity == HIGH_SPEED) {
+                speedSensitivity = LOW_SPEED;
+            } else {
+                speedSensitivity = HIGH_SPEED;
+            }
         }
 
         if (purpleToggle) {

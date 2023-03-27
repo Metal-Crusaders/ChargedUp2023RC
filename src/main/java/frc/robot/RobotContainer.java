@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.autonomous.ChargePanelAuto;
+import frc.robot.commands.autonomous.FastChargeAuto;
 import frc.robot.commands.autonomous.LeaveAndChargeAuto;
 import frc.robot.commands.autonomous.tools.DoNothing;
 import frc.robot.commands.autonomous.tools.DriveStraightAuto;
@@ -64,6 +65,7 @@ public class RobotContainer {
   DoNothing doNothingAuto;
   DriveStraightAuto exitCommunityAuto;
   ChargePanelAuto chargePanelAuto;
+  FastChargeAuto fastChargeAuto;
   LeaveAndChargeAuto leaveAndCharge;
 
   SendableChooser<Command> chooser;
@@ -142,6 +144,7 @@ public class RobotContainer {
     doNothingAuto = new DoNothing();
     exitCommunityAuto = new DriveStraightAuto(drive, 30500);
     chargePanelAuto = new ChargePanelAuto(drive, false);
+    fastChargeAuto = new FastChargeAuto(drive);
     leaveAndCharge = new LeaveAndChargeAuto(drive);
 
     // Sendable Chooser:
@@ -151,6 +154,7 @@ public class RobotContainer {
     chooser.addOption("Do Nothing Auto", doNothingAuto);
     chooser.addOption("Exit Community Auto", exitCommunityAuto);
     chooser.addOption("Charge Panel Middle Auto", chargePanelAuto);
+    chooser.addOption("Fast Charge Auto", fastChargeAuto);
     chooser.addOption("Leave Community + Charge Auto", leaveAndCharge);
 
     configureButtonBindings();

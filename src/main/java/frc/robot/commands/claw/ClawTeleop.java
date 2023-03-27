@@ -56,7 +56,7 @@ public class ClawTeleop extends CommandBase {
         double wristSpeed = wristInput.getAsDouble();
 
         if (abs(wristSpeed) < DEADBAND) {
-            wristSpeed = 0.1;
+            wristSpeed = -0.1;
         }
 
         wristSpeed *= WRIST_FULL_POWER;
