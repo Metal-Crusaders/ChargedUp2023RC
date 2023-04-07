@@ -7,7 +7,7 @@ import frc.robot.subsystems.TankDrive;
 
 public class LeaveAndChargeAuto extends SequentialCommandGroup {
 
-    private double DRIVE_STRAIGHT_TARGET = 32135.870117; // TODO change this
+    private double DRIVE_STRAIGHT_TARGET = 34000; // TODO change this
 
     private TankDrive drive;
 
