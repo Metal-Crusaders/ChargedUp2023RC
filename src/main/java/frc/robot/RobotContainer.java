@@ -151,7 +151,7 @@ public class RobotContainer {
 
     chooser.addOption("Do Nothing Auto", doNothingAuto);
     chooser.addOption("Shoot And Leave Auto", shootAndLeaveAuto);
-    chooser.addOption("Charge Panel Auto", chargePanelAuto);
+    chooser.addOption("JUST (Old) Charge Panel Auto", chargePanelAuto);
     chooser.addOption("Shoot And Charge Auto", shootAndChargeAuto);
     chooser.addOption("Leave Community + Charge Auto", leaveAndCharge);
     chooser.addOption("Do Everything", everythingAuto);
