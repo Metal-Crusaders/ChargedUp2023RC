@@ -1,6 +1,7 @@
 package frc.robot.commands.autonomous.tools;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Claw;
 
@@ -8,37 +9,43 @@ public class HighCubeShot extends CommandBase {
 
     private final Claw claw;
     private Timer timer;
-    private final double BENCHMARK1 = 0.1, BENCHMARK2 = 0.5;
+    private final double BENCHMARK1 = 0.5, BENCHMARK2 = 1.5;
 
     public HighCubeShot(Claw claw) {
+        super();
         this.claw = claw;
+        timer = new Timer();
+
+        addRequirements(claw);
     }
 
     @Override
     public void initialize() {
-        timer = new Timer();
         timer.reset();
         timer.start();
-        claw.rawRollerControl(-0.15);
+        claw.set(false);
     }
 
     @Override
     public void execute() {
-        if (timer.advanceIfElapsed(BENCHMARK1)) {
-            claw.rawRollerControl(0.9);
+        if (timer.get() >= BENCHMARK1) {
+            claw.rawRollerControl(1);
+        } else {
+            claw.rawRollerControl(-0.35);
         }
-        if (timer.advanceIfElapsed(BENCHMARK2)) {
-            claw.rawRollerControl(0);
-        }
+
+        SmartDashboard.putBoolean("High Cube Command Ended", timer.get() >= BENCHMARK2);
+        SmartDashboard.putNumber("Timer Seconds", timer.get());
     }
 
     @Override
     public void end(boolean interrupted) {
+        claw.set(true);
         claw.rawRollerControl(0);
     }
 
     @Override
     public boolean isFinished() {
-        return (timer.advanceIfElapsed(BENCHMARK2));
+        return (timer.get() >= BENCHMARK2);
     }
 }

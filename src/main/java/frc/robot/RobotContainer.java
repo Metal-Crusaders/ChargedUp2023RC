@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.autonomous.*;
+import frc.robot.commands.autonomous.tools.HighCubeShot;
 import frc.robot.commands.claw.ClawTeleop;
 import frc.robot.commands.elevator.RawElevatorTeleop;
 import frc.robot.commands.tankdrive.RawTankTeleop;
@@ -58,6 +59,7 @@ public class RobotContainer {
 
   // Auto Commands
   DoNothing doNothingAuto;
+  HighCubeShot shootAuto;
   ShootAndLeaveAuto shootAndLeaveAuto;
   ChargePanelAuto chargePanelAuto;
   ShootAndChargeAuto shootAndChargeAuto;
@@ -138,6 +140,7 @@ public class RobotContainer {
 
     // Auto Commands
     doNothingAuto = new DoNothing();
+    shootAuto = new HighCubeShot(claw);
     shootAndLeaveAuto = new ShootAndLeaveAuto(drive, claw);
     chargePanelAuto = new ChargePanelAuto(drive, false);
     shootAndChargeAuto = new ShootAndChargeAuto(drive, claw);
@@ -150,6 +153,7 @@ public class RobotContainer {
     SmartDashboard.putData(chooser);
 
     chooser.addOption("Do Nothing Auto", doNothingAuto);
+    chooser.addOption("Shoot Test Auto", shootAuto);
     chooser.addOption("Shoot And Leave Auto", shootAndLeaveAuto);
     chooser.addOption("JUST (Old) Charge Panel Auto", chargePanelAuto);
     chooser.addOption("Shoot And Charge Auto", shootAndChargeAuto);
