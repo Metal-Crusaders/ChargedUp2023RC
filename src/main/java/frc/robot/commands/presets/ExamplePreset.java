@@ -35,6 +35,7 @@ public class ExamplePreset extends CommandBase {
   public ExamplePreset(Pivot pivot, Elevator elevator, Claw claw, boolean elevatorIntent, double pivotTicks, double clawTicks) {
     this.pivot = pivot;
     this.elevator = elevator;
+    this.claw = claw;
     this.elevatorIntent = elevatorIntent;
     this.pivotTicks = pivotTicks;
     this.clawTicks = clawTicks;

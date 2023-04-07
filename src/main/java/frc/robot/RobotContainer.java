@@ -10,14 +10,9 @@ import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.commands.autonomous.ChargePanelAuto;
-import frc.robot.commands.autonomous.FastChargeAuto;
-import frc.robot.commands.autonomous.LeaveAndChargeAuto;
-import frc.robot.commands.autonomous.tools.DoNothing;
-import frc.robot.commands.autonomous.tools.DriveStraightAuto;
+import frc.robot.commands.autonomous.*;
 import frc.robot.commands.claw.ClawTeleop;
 import frc.robot.commands.elevator.RawElevatorTeleop;
-import frc.robot.commands.tankdrive.ArcadeTeleop;
 import frc.robot.commands.tankdrive.RawTankTeleop;
 import frc.robot.commands.pivot.RawPivotTeleop;
 import frc.robot.motor.MySparkMax;
@@ -63,10 +58,11 @@ public class RobotContainer {
 
   // Auto Commands
   DoNothing doNothingAuto;
-  DriveStraightAuto exitCommunityAuto;
+  ShootAndLeaveAuto shootAndLeaveAuto;
   ChargePanelAuto chargePanelAuto;
-  FastChargeAuto fastChargeAuto;
+  ShootAndChargeAuto shootAndChargeAuto;
   LeaveAndChargeAuto leaveAndCharge;
+  LiterallyEverything everythingAuto;
 
   SendableChooser<Command> chooser;
 
@@ -142,25 +138,23 @@ public class RobotContainer {
 
     // Auto Commands
     doNothingAuto = new DoNothing();
-    exitCommunityAuto = new DriveStraightAuto(drive, 30500);
+    shootAndLeaveAuto = new ShootAndLeaveAuto(drive, claw);
     chargePanelAuto = new ChargePanelAuto(drive, false);
-    fastChargeAuto = new FastChargeAuto(drive);
+    shootAndChargeAuto = new ShootAndChargeAuto(drive, claw);
     leaveAndCharge = new LeaveAndChargeAuto(drive);
+    everythingAuto = new LiterallyEverything(drive, claw);
 
     // Sendable Chooser:
     chooser = new SendableChooser<>();
+
     SmartDashboard.putData(chooser);
 
     chooser.addOption("Do Nothing Auto", doNothingAuto);
-    chooser.addOption("Exit Community Auto", exitCommunityAuto);
-    chooser.addOption("Charge Panel Middle Auto", chargePanelAuto);
-    chooser.addOption("Fast Charge Auto", fastChargeAuto);
+    chooser.addOption("Shoot And Leave Auto", shootAndLeaveAuto);
+    chooser.addOption("Charge Panel Auto", chargePanelAuto);
+    chooser.addOption("Shoot And Charge Auto", shootAndChargeAuto);
     chooser.addOption("Leave Community + Charge Auto", leaveAndCharge);
-
-    configureButtonBindings();
-  }
-
-  private void configureButtonBindings() {
+    chooser.addOption("Do Everything", everythingAuto);
   }
 
   public Command getAutonomousCommand() {

@@ -1,10 +1,8 @@
 package frc.robot.commands.autonomous;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.autonomous.tools.BalanceAuto;
 import frc.robot.commands.autonomous.tools.DriveStraightAuto;
 import frc.robot.commands.autonomous.tools.DriveTurnAuto;
-import frc.robot.commands.autonomous.tools.MountPanelAuto;
 import frc.robot.subsystems.TankDrive;
 
 public class LeaveAndChargeAuto extends SequentialCommandGroup {
@@ -15,7 +13,7 @@ public class LeaveAndChargeAuto extends SequentialCommandGroup {
 
     private DriveStraightAuto driveStraightAuto;
     private DriveTurnAuto turn180Auto;
-    private ChargePanelAuto chargePanelAuto;
+    private FastChargeAuto fastChargeAuto;
 
     public LeaveAndChargeAuto(TankDrive drive) {
         super();
@@ -25,12 +23,12 @@ public class LeaveAndChargeAuto extends SequentialCommandGroup {
 
         driveStraightAuto = new DriveStraightAuto(drive, DRIVE_STRAIGHT_TARGET);
         turn180Auto = new DriveTurnAuto(drive, 155);
-        chargePanelAuto = new ChargePanelAuto(drive, false);
+        fastChargeAuto = new FastChargeAuto(drive);
 
         addCommands(
                 driveStraightAuto,
                 turn180Auto,
-                chargePanelAuto
+                fastChargeAuto
         );
     }
 

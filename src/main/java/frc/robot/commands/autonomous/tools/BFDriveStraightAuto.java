@@ -1,54 +1,48 @@
 package frc.robot.commands.autonomous.tools;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.TankDrive;
 
-public class BalanceAuto extends CommandBase {
+public class BFDriveStraightAuto extends CommandBase {
 
     private final TankDrive driveTrain;
 
-    private final double deadband = 1;
+    private Timer timer;
 
-    private final double FULL_POWER = 0.075;
+    private final double seconds, power;
 
-    private final double kP = (1.0 / 13.5);
-
-    private boolean isBackwards;
-
-    public BalanceAuto(TankDrive driveTrain, boolean isBackwards) {
+    public BFDriveStraightAuto(TankDrive driveTrain, double seconds, double power) {
         super();
         this.driveTrain = driveTrain;
-        this.isBackwards = isBackwards;
+        this.seconds = seconds;
+        this.power = power;
+
         addRequirements(driveTrain);
     }
 
     @Override
     public void initialize() {
+        timer = new Timer();
+        timer.reset();
+        timer.start();
         driveTrain.resetEncoders();
-        driveTrain.resetGyro();
+        driveTrain.set(power);
     }
 
     @Override
     public void execute() {
-
-        double speed = (driveTrain.getTilt() * kP) * FULL_POWER;
-
-        if (isBackwards) {
-            speed *= -1;
+        if (timer.advanceIfElapsed(seconds)) {
+            driveTrain.set(0);
         }
-
-        SmartDashboard.putNumber("Balance Speed", speed);
-
-        driveTrain.set(speed);
-
     }
 
     @Override
     public void end(boolean interrupted) {
         driveTrain.set(0);
         try {
-            Thread.sleep(1000);
+            Thread.sleep(10);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -56,7 +50,6 @@ public class BalanceAuto extends CommandBase {
 
     @Override
     public boolean isFinished() {
-//        return (driveTrain.getTilt() < deadband) && (driveTrain.getTilt() > -deadband);
-        return false;
+        return (timer.advanceIfElapsed(seconds));
     }
 }

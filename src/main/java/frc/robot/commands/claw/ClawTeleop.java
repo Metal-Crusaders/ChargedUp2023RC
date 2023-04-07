@@ -65,6 +65,7 @@ public class ClawTeleop extends CommandBase {
         SmartDashboard.putBoolean("Rollers on?", rollerBtn.getAsBoolean());
         SmartDashboard.putBoolean("Anti_speed rollers?", oppRollerBtn.getAsBoolean());
         SmartDashboard.putNumber("Wrist Speed", wristSpeed);
+//        SmartDashboard.putNumber("")
 
         claw.setWrist(wristSpeed);
     }

@@ -2,17 +2,16 @@ package frc.robot.commands.autonomous;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.autonomous.tools.BalanceAuto;
-import frc.robot.commands.autonomous.tools.DriveStraightAuto;
+import frc.robot.commands.autonomous.tools.BFDriveStraightAuto;
 import frc.robot.commands.autonomous.tools.MountPanelAuto;
 import frc.robot.subsystems.TankDrive;
 
 public class FastChargeAuto extends SequentialCommandGroup {
 
-    private double TARGET = 15000;
-
     private TankDrive drive;
 
-    private DriveStraightAuto mountPanelAuto;
+    private MountPanelAuto mountPanelAuto;
+    private BFDriveStraightAuto estimateMidAuto;
     private BalanceAuto balanceAuto;
 
     public FastChargeAuto(TankDrive drive) {
@@ -21,11 +20,13 @@ public class FastChargeAuto extends SequentialCommandGroup {
 
         addRequirements(drive);
 
-        mountPanelAuto = new DriveStraightAuto(drive, TARGET);
+        mountPanelAuto = new MountPanelAuto(drive, false);
+        estimateMidAuto = new BFDriveStraightAuto(drive, 2, 0.4); // TODO TWEAK THIS
         balanceAuto = new BalanceAuto(drive, false);
 
         addCommands(
                 mountPanelAuto,
+                estimateMidAuto,
                 balanceAuto
         );
     }
