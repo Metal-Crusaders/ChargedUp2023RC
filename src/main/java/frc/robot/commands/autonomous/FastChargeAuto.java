@@ -21,7 +21,7 @@ public class FastChargeAuto extends SequentialCommandGroup {
         addRequirements(drive);
 
         mountPanelAuto = new MountPanelAuto(drive, false);
-        estimateMidAuto = new BFDriveStraightAuto(drive, 2, 0.4); // TODO TWEAK THIS
+        estimateMidAuto = new BFDriveStraightAuto(drive, 0.85, 0.25); // TODO TWEAK THIS
         balanceAuto = new BalanceAuto(drive, false);
 
         addCommands(
@@ -30,5 +30,4 @@ public class FastChargeAuto extends SequentialCommandGroup {
                 balanceAuto
         );
     }
-
 }

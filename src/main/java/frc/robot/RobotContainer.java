@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.autonomous.*;
 import frc.robot.commands.autonomous.tools.HighCubeShot;
+import frc.robot.commands.autonomous.tools.MidCubeShot;
 import frc.robot.commands.claw.ClawTeleop;
 import frc.robot.commands.elevator.RawElevatorTeleop;
 import frc.robot.commands.tankdrive.RawTankTeleop;
@@ -28,7 +29,7 @@ public class RobotContainer {
   // Motors
   public MySparkMax leftFront, leftRear, rightFront, rightRear;
   public VictorSP leftPivot, rightPivot;
-  public VictorSP elevatorMotor1, elevatorMotor2;
+  public MySparkMax elevatorMotor;
   public VictorSP clawRoller1, clawRoller2, clawWrist;
 
   // Pneumatics
@@ -36,7 +37,7 @@ public class RobotContainer {
 
   // Sensors
   public AHRS gyro;
-  public Encoder pivotEncoder, elevatorEncoder, wristEncoder;
+  public Encoder pivotEncoder, wristEncoder;
   public AddressableLED leds;
   public AddressableLEDBuffer ledBuf;
 
@@ -48,7 +49,7 @@ public class RobotContainer {
 
   // OI + Buttons
   public OI oi;
-  public MyButton clawOpenBtn, clawRollerBtn, clawRollerOppBtn;
+  public MyButton clawOpenBtn, clawRollerBtn, clawRollerOppBtn, shootMidBtn, shootHighBtn;
   public MyButton sensitivityShifter, purpleBtn, yellowBtn;
 
   // Commands
@@ -59,7 +60,9 @@ public class RobotContainer {
 
   // Auto Commands
   DoNothing doNothingAuto;
-  HighCubeShot shootAuto;
+
+  MidCubeShot midCubeShot;
+  HighCubeShot highCubeShot;
   ShootAndLeaveAuto shootAndLeaveAuto;
   ChargePanelAuto chargePanelAuto;
   ShootAndChargeAuto shootAndChargeAuto;
@@ -86,10 +89,7 @@ public class RobotContainer {
     leftPivot.setInverted(RobotMap.LEFT_PIV_INVERTED);
     rightPivot.setInverted(!RobotMap.LEFT_PIV_INVERTED);
 
-    elevatorMotor1 = new VictorSP(RobotMap.ELEVATOR_PWM_ID1);
-    elevatorMotor1.setInverted(RobotMap.ELEVATOR_REVERSED);
-    elevatorMotor2 = new VictorSP(RobotMap.ELEVATOR_PWM_ID2);
-    elevatorMotor2.setInverted(!RobotMap.ELEVATOR_REVERSED);
+    elevatorMotor = new MySparkMax(RobotMap.ELEVATOR_CAN_ID, true, RobotMap.ELEVATOR_REVERSED);
 
     clawRoller1 = new VictorSP(RobotMap.CLAW_ROLLER1);
     clawRoller1.setInverted(RobotMap.CLAW_REVERSED);
@@ -105,13 +105,12 @@ public class RobotContainer {
     // Sensors
     gyro = new AHRS(SPI.Port.kMXP);
     pivotEncoder = new Encoder(RobotMap.PIVOT_ENCODER_IN, RobotMap.PIVOT_ENCODER_OUT);
-    elevatorEncoder = new Encoder(RobotMap.ELEVATOR_ENCODER_IN, RobotMap.ELEVATOR_ENCODER_OUT);
     wristEncoder = new Encoder(RobotMap.WRIST_ENCODER_IN, RobotMap.WRIST_ENCODER_OUT);
 
     // Subsystems
     drive = new TankDrive(leftFront, rightFront, gyro);
     pivot = new Pivot(leftPivot, rightPivot, pivotEncoder);
-    elevator = new Elevator(elevatorMotor1, elevatorMotor2, elevatorEncoder);
+    elevator = new Elevator(elevatorMotor);
     claw = new Claw(clawSolenoid, clawRoller1, clawRoller2, clawWrist, wristEncoder);
 
     // OI + Buttons
@@ -122,6 +121,9 @@ public class RobotContainer {
     sensitivityShifter = new MyButton(oi.getDriverXbox(), OI.XBOX_A);
     purpleBtn = new MyButton(oi.getDriverXbox(), OI.XBOX_X);
     yellowBtn = new MyButton(oi.getDriverXbox(), OI.XBOX_B);
+
+    shootMidBtn = new MyButton(oi.getOperatorXbox(), OI.XBOX_X);
+    shootHighBtn = new MyButton(oi.getOperatorXbox(), OI.XBOX_Y);
 
     // Commands
     tankTeleop = new RawTankTeleop(
@@ -140,7 +142,8 @@ public class RobotContainer {
 
     // Auto Commands
     doNothingAuto = new DoNothing();
-    shootAuto = new HighCubeShot(claw);
+    midCubeShot = new MidCubeShot(claw);
+    highCubeShot = new HighCubeShot(claw);
     shootAndLeaveAuto = new ShootAndLeaveAuto(drive, claw);
     chargePanelAuto = new ChargePanelAuto(drive, false);
     shootAndChargeAuto = new ShootAndChargeAuto(drive, claw);
@@ -153,12 +156,19 @@ public class RobotContainer {
     SmartDashboard.putData(chooser);
 
     chooser.addOption("Do Nothing Auto", doNothingAuto);
-    chooser.addOption("Shoot Test Auto", shootAuto);
+    chooser.addOption("Shoot Test Auto", highCubeShot);
     chooser.addOption("Shoot And Leave Auto", shootAndLeaveAuto);
     chooser.addOption("JUST (Old) Charge Panel Auto", chargePanelAuto);
     chooser.addOption("Shoot And Charge Auto", shootAndChargeAuto);
     chooser.addOption("Leave Community + Charge Auto", leaveAndCharge);
     chooser.addOption("Do Everything", everythingAuto);
+
+    configureButtonBindings();
+  }
+
+  public void configureButtonBindings() {
+    shootMidBtn.toggleWhenPressed(midCubeShot);
+    shootHighBtn.toggleWhenPressed(highCubeShot);
   }
 
   public Command getAutonomousCommand() {

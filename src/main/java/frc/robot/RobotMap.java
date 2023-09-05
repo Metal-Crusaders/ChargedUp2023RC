@@ -26,15 +26,12 @@ public final class RobotMap {
     // PWM / DIO
     public static final int LEFT_PIVOT = 5;
     public static final int RIGHT_PIVOT = 6;
-    public static final int ELEVATOR_PWM_ID1 = 7;
-    public static final int ELEVATOR_PWM_ID2 = 8;
+    public static final int ELEVATOR_CAN_ID = 5; // TODO change this if necessary
     public static final int PIVOT_ENCODER_IN = 4;
     public static final int PIVOT_ENCODER_OUT = 5;
     public static final int CLAW_ROLLER1 = 1;
     public static final int CLAW_ROLLER2 = 2;
     public static final int CLAW_WRIST = 9;
-    public static final int ELEVATOR_ENCODER_IN = 0;
-    public static final int ELEVATOR_ENCODER_OUT = 1;
     public static final int WRIST_ENCODER_IN = 2;
     public static final int WRIST_ENCODER_OUT = 3;
 

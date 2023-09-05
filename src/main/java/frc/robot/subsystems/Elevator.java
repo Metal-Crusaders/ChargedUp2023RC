@@ -4,54 +4,42 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
+import frc.robot.motor.MySparkMax;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Elevator extends SubsystemBase {
 
-    VictorSP motor1, motor2;
-    Encoder encoder;
+    MySparkMax motor;
 
     private final double LOWER_BOUND = 0, UPPER_BOUND = 0; // TODO figure out elevator upper bounds
 
-    public Elevator(VictorSP motor1, VictorSP motor2, Encoder encoder) {
-        this.motor1 = motor1;
-        this.motor2 = motor2;
-        this.encoder = encoder;
+    public Elevator(MySparkMax motor) {
+        this.motor = motor;
     }
 
     // basic motor methods
     public void set(double speed) {
-        this.motor1.set(speed);
-        this.motor2.set(speed);
+        this.motor.set(speed);
     }
 
     public void stop() {
-        this.motor1.set(0);
-        this.motor2.set(0);
+        this.motor.set(0);
     }
 
-    public VictorSP getMotor1() {
-        return this.motor1;
+    public MySparkMax getMotor() {
+        return this.motor;
     }
 
-    public VictorSP getMotor2() {
-        return this.motor2;
+    public double getEncoderTicks() {
+        return this.motor.getDistance();
     }
 
-    // basic limit switch methods:
-    public Encoder getEncoder() {
-        return encoder;
-    }
 
     public boolean upperLimitTriggered() {
-//        return encoder.getDistance() >= UPPER_BOUND;
-        return false;
+        return this.getEncoderTicks() >= UPPER_BOUND;
     }
 
     public boolean lowerLimitTriggered() {
-//        return encoder.getDistance() <= LOWER_BOUND;
-        return false;
+        return this.getEncoderTicks() <= LOWER_BOUND;
     }
 }

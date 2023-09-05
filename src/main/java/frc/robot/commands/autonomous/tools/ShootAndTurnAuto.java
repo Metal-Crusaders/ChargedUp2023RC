@@ -26,8 +26,8 @@ public class ShootAndTurnAuto extends SequentialCommandGroup {
         addRequirements(this.claw);
 
         shootCube = new HighCubeShot(claw);
-        littleBack = new BFDriveStraightAuto(drive, 0.25, 0.25);
-        turn180 = new DriveTurnAuto(drive, 155);
+        littleBack = new BFDriveStraightAuto(drive, 0.5, 0.25);
+        turn180 = new DriveTurnAuto(drive, 160);
 
         addCommands(
                 shootCube,

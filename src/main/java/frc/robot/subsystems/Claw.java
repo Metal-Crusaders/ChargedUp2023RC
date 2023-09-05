@@ -39,10 +39,6 @@ public class Claw extends SubsystemBase {
         }
     }
 
-    public void pistonOff() {
-        piston.set(DoubleSolenoid.Value.kOff);
-    }
-
     public boolean isOpen() {
         return (piston.get() == DoubleSolenoid.Value.kForward);
     }
