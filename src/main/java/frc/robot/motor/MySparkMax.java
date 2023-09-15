@@ -3,7 +3,6 @@ package frc.robot.motor;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxRelativeEncoder;
-import frc.robot.subsystems.TankDrive;
 
 public class MySparkMax extends CANSparkMax  {
 
@@ -23,6 +22,7 @@ public class MySparkMax extends CANSparkMax  {
         super(deviceId, ((brushless) ? MotorType.kBrushless : MotorType.kBrushed));
         this.setInverted(inverted);
         this.setEncoderPositionConstant(420);
+        super.setIdleMode(IdleMode.kCoast);
     }
 
     public MySparkMax getMotor() {

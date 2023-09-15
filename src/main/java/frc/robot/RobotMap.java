@@ -19,7 +19,7 @@ public final class RobotMap {
 
     public static final boolean LEFT_DT_INVERTED = false;
     public static final boolean LEFT_PIV_INVERTED = false;
-    public static final boolean ELEVATOR_REVERSED = false;
+    public static final boolean ELEVATOR_REVERSED = true;
     public static final boolean CLAW_REVERSED = false;
     public static final boolean WRIST_REVERSED = true;
 

@@ -23,8 +23,8 @@ public class ContinuousPreset extends CommandBase {
   int DEADBAND_PIVOT = 5;
   int DEADBAND_CLAW = 5;
 
-  double kPPivot = 0.1; // TODO TEST ALL KPs
-  double kPClaw = 0.1;
+  double kPPivot = 1; // TODO TEST ALL KPs
+  double kPClaw = 1;
 
   double pivotSpeed, clawSpeed;
 

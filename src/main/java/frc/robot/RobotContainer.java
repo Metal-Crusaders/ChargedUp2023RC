@@ -17,6 +17,7 @@ import frc.robot.commands.claw.ClawTeleop;
 import frc.robot.commands.elevator.RawElevatorTeleop;
 import frc.robot.commands.tankdrive.RawTankTeleop;
 import frc.robot.commands.pivot.RawPivotTeleop;
+import frc.robot.commands.presets.ExamplePreset;
 import frc.robot.motor.MySparkMax;
 import frc.robot.sensors.MyButton;
 import frc.robot.subsystems.Claw;
@@ -51,12 +52,14 @@ public class RobotContainer {
   public OI oi;
   public MyButton clawOpenBtn, clawRollerBtn, clawRollerOppBtn, shootMidBtn, shootHighBtn;
   public MyButton sensitivityShifter, purpleBtn, yellowBtn;
+  public MyButton defaultButton;
 
   // Commands
   public RawTankTeleop tankTeleop;
   public RawPivotTeleop pivotTeleop;
   public RawElevatorTeleop elevatorTeleop;
   public ClawTeleop clawTeleop;
+  public ExamplePreset testPreset;
 
   // Auto Commands
   DoNothing doNothingAuto;
@@ -118,11 +121,12 @@ public class RobotContainer {
     clawOpenBtn = new MyButton(oi.getOperatorXbox(), OI.XBOX_A);
     clawRollerBtn = new MyButton(oi.getOperatorXbox(), OI.XBOX_LB);
     clawRollerOppBtn = new MyButton(oi.getOperatorXbox(), OI.XBOX_RB);
+    defaultButton = new MyButton(oi.getOperatorXbox(), OI.XBOX_X);
     sensitivityShifter = new MyButton(oi.getDriverXbox(), OI.XBOX_A);
     purpleBtn = new MyButton(oi.getDriverXbox(), OI.XBOX_X);
     yellowBtn = new MyButton(oi.getDriverXbox(), OI.XBOX_B);
 
-    shootMidBtn = new MyButton(oi.getOperatorXbox(), OI.XBOX_X);
+    // shootMidBtn = new MyButton(oi.getOperatorXbox(), OI.XBOX_X);
     shootHighBtn = new MyButton(oi.getOperatorXbox(), OI.XBOX_Y);
 
     // Commands
@@ -139,6 +143,7 @@ public class RobotContainer {
     );
 
     // presets here
+    testPreset = new ExamplePreset(pivot, elevator, claw, false, 0, 0);
 
     // Auto Commands
     doNothingAuto = new DoNothing();
@@ -167,8 +172,9 @@ public class RobotContainer {
   }
 
   public void configureButtonBindings() {
-    shootMidBtn.toggleWhenPressed(midCubeShot);
-    shootHighBtn.toggleWhenPressed(highCubeShot);
+    // shootMidBtn.toggleOnTrue(midCubeShot);
+    shootHighBtn.toggleOnTrue(highCubeShot);
+    defaultButton.toggleOnTrue(testPreset);
   }
 
   public Command getAutonomousCommand() {
