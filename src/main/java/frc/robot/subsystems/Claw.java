@@ -16,7 +16,7 @@ public class Claw extends SubsystemBase {
     VictorSP wrist;
     Encoder wristEncoder;
 
-    public static final double LOWER_BOUND = 0, UPPER_BOUND = 420;
+    public static final double LOWER_BOUND = -600, UPPER_BOUND = 0, PICKUP = -500;
 
     public static final double SUCK_POWER = 0.25, SPIT_POWER = 0.65;
 

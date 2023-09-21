@@ -27,8 +27,8 @@ public final class RobotMap {
     public static final int LEFT_PIVOT = 5;
     public static final int RIGHT_PIVOT = 6;
     public static final int ELEVATOR_CAN_ID = 5; // TODO change this if necessary
-    public static final int PIVOT_ENCODER_IN = 4;
-    public static final int PIVOT_ENCODER_OUT = 5;
+    public static final int PIVOT_ENCODER_IN = 6;
+    public static final int PIVOT_ENCODER_OUT = 7;
     public static final int CLAW_ROLLER1 = 1;
     public static final int CLAW_ROLLER2 = 2;
     public static final int CLAW_WRIST = 9;

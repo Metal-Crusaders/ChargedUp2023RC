@@ -2,28 +2,25 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.presets;
+package frc.robot.commands.elevator;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Elevator;
-import frc.robot.subsystems.Pivot;
 
 /** An example command that uses an example subsystem. */
-public class StandbyMode extends CommandBase {
+public class ElevatorPreset extends CommandBase {
 
-  Pivot pivot;
   Elevator elevator;
-  Claw claw;
 
-  public StandbyMode(Pivot pivot, Elevator elevator, Claw claw) {
-    this.pivot = pivot;
+  boolean elevatorIntent;
+
+  double ELEVATOR_FULL_POWER = 0.3;
+
+  public ElevatorPreset(Elevator elevator, boolean elevatorIntent) {
     this.elevator = elevator;
-    this.claw = claw;
+    this.elevatorIntent = elevatorIntent;
 
-    addRequirements(pivot);
     addRequirements(elevator);
-    addRequirements(claw);
   }
 
   @Override
@@ -32,27 +29,23 @@ public class StandbyMode extends CommandBase {
 
   @Override
   public void execute() {
-
-    if (pivot.getEncoderTicks() >= Pivot.STRAIGHT_UP) {
-      pivot.set(-0.1);
-      claw.setWrist(0.1);
+    if (elevatorIntent && !(elevator.upperLimitTriggered())) {
+      elevator.set(ELEVATOR_FULL_POWER);
     } else {
-      pivot.set(0.1);
-      claw.setWrist(-0.1);
+      elevator.set(-ELEVATOR_FULL_POWER);
     }
-
-    elevator.set(-0.1);
   }
 
   @Override
   public void end(boolean interrupted) {
-    pivot.stop();
     elevator.stop();
-    claw.setWrist(0);
   }
 
   @Override
   public boolean isFinished() {
-    return false;
+    return (
+        (elevatorIntent && elevator.upperLimitTriggered()) ||
+        (!elevatorIntent && elevator.lowerLimitTriggered())
+    );
   }
 }

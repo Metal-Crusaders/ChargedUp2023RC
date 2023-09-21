@@ -31,7 +31,7 @@ public class RawPivotTeleop extends CommandBase {
     public void execute() {
         double speed = pivotInput.getAsDouble() * FULL_POWER;
         SmartDashboard.putNumber("Pivot Speed", speed);
-        SmartDashboard.putNumber("Pivot Encoder Ticks", pivot.getEncoderTicks());
+        SmartDashboard.putNumber("Pivot REAL Encoder Ticks", pivot.getEncoderTicks());
 
         if (speed < DEADZONE && speed > -DEADZONE) {
             speed = 0.09;
