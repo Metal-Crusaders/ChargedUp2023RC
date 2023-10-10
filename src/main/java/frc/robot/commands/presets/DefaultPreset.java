@@ -1,5 +1,9 @@
 package frc.robot.commands.presets;
 
+import java.util.function.DoubleSupplier;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.Pivot;
 import frc.robot.subsystems.Elevator;
@@ -28,14 +32,13 @@ public class DefaultPreset extends SequentialCommandGroup {
         addRequirements(elevator);
         addRequirements(claw);
 
-       pivotPreset = new PivotPreset(pivot, 0);
-       elevatorPreset = new ElevatorPreset(elevator, false);
-       clawPreset = new ClawPreset(claw, 0, false);
-
+        pivotPreset = new PivotPreset(pivot, 0);
+        elevatorPreset = new ElevatorPreset(elevator, false);
+        clawPreset = new ClawPreset(claw, 0);
         addCommands(
             elevatorPreset,
-            clawPreset,
-            pivotPreset
+            new ParallelCommandGroup(clawPreset, pivotPreset)
         );
+        
     }
 }

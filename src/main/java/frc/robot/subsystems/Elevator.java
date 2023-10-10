@@ -11,10 +11,11 @@ public class Elevator extends SubsystemBase {
 
     MySparkMax motor;
 
-    private final double LOWER_BOUND = 1000, UPPER_BOUND = 15500; // TODO figure out elevator upper bounds
+    private final double LOWER_BOUND = 0, UPPER_BOUND = 14000; // TODO figure out elevator upper bounds
 
     public Elevator(MySparkMax motor) {
         this.motor = motor;
+        resetEncoder();
     }
 
     // basic motor methods

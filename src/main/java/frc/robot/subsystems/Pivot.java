@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Pivot extends SubsystemBase {
 
-  public static final double LOWER_BOUND = 0;
+  public static final double LOWER_BOUND = -1e9;
   public static final double UPPER_BOUND = 100000;
   public static final double STRAIGHT_UP = 952.750000;
   private final VictorSP pivotL, pivotR;

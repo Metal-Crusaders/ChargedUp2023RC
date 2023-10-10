@@ -28,14 +28,14 @@ public class GroundPreset extends SequentialCommandGroup {
         addRequirements(elevator);
         addRequirements(claw);
 
-       pivotPreset = new PivotPreset(pivot, 0);
-       elevatorPreset = new ElevatorPreset(elevator, false);
-       clawPreset = new ClawPreset(claw, 0, false);
+       pivotPreset = new PivotPreset(pivot, 300);
+       elevatorPreset = new ElevatorPreset(elevator, true);
+       clawPreset = new ClawPreset(claw, -400.000000);
 
         addCommands(
-            elevatorPreset,
+            pivotPreset,
             clawPreset,
-            pivotPreset
+            elevatorPreset
         );
     }
 }

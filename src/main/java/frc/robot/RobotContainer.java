@@ -80,7 +80,6 @@ public class RobotContainer {
 
   SendableChooser<Command> chooser;
 
-
   public RobotContainer() {
 
     // Motors
@@ -99,6 +98,7 @@ public class RobotContainer {
     rightPivot.setInverted(!RobotMap.LEFT_PIV_INVERTED);
 
     elevatorMotor = new MySparkMax(RobotMap.ELEVATOR_CAN_ID, true, RobotMap.ELEVATOR_REVERSED);
+    elevatorMotor.brake();
 
     clawRoller1 = new VictorSP(RobotMap.CLAW_ROLLER1);
     clawRoller1.setInverted(RobotMap.CLAW_REVERSED);

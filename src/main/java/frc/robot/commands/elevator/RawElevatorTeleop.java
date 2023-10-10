@@ -40,12 +40,12 @@ public class RawElevatorTeleop extends CommandBase {
             speed = 0;
         }
 
-        if (
-            (elevator.upperLimitTriggered() && speed >= 0) ||
-            (elevator.lowerLimitTriggered() && speed <= 0)
-        ) {
-            speed = 0;
-        }
+        // if (
+        //     (elevator.upperLimitTriggered() && speed >= 0) ||
+        //     (elevator.lowerLimitTriggered() && speed <= 0)
+        // ) {
+        //     speed = 0;
+        // }
 
         SmartDashboard.putNumber("Elevator Speed", speed);
         SmartDashboard.putNumber("Elevator encoder ticks", elevator.getEncoderTicks());

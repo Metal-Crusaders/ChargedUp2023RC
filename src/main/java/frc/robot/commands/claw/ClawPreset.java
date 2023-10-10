@@ -4,6 +4,7 @@
 
 package frc.robot.commands.claw;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Claw;
 
@@ -14,17 +15,15 @@ public class ClawPreset extends CommandBase {
 
   double clawTicks;
 
-  int DEADBAND_CLAW = 5;
+  double DEADBAND_CLAW = 5;
 
   double clawSpeed;
-  boolean clawOpen;
 
-  double WRIST_FULL_POWER = 0.1;
+  double WRIST_FULL_POWER = 0.7;
 
-  public ClawPreset(Claw claw, double clawTicks, boolean clawOpen) {
+  public ClawPreset(Claw claw, double clawTicks) {
     this.claw = claw;
     this.clawTicks = clawTicks;
-    this.clawOpen = clawOpen;
 
     addRequirements(claw);
   }
@@ -36,15 +35,9 @@ public class ClawPreset extends CommandBase {
   @Override
   public void execute() {
       // once everything else is done, do claw stuff
-      if (!clawOpen) {
-        claw.set(clawOpen);
-      } else if (Math.abs(claw.getWristTicks() - clawTicks) >= DEADBAND_CLAW) {
-        clawSpeed = (claw.getWristTicks() - clawTicks) / (Math.abs(claw.getWristTicks() - clawTicks)) * WRIST_FULL_POWER;
-        claw.setWrist(clawSpeed);
-      }
-      if (clawOpen) {
-        claw.set(clawOpen);
-      }
+      clawSpeed = (claw.getWristTicks() - clawTicks) / (Math.abs(claw.getWristTicks() - clawTicks)) * WRIST_FULL_POWER;
+      SmartDashboard.putNumber("Claw Speed Defined in Claw Preset", clawSpeed);
+      claw.setWrist(clawSpeed);
   }
 
   @Override
@@ -54,9 +47,11 @@ public class ClawPreset extends CommandBase {
 
   @Override
   public boolean isFinished() {
+    SmartDashboard.putBoolean("donzo", (
+      (Math.abs(claw.getWristTicks() - clawTicks) <= DEADBAND_CLAW)
+    ));
     return (
-        (Math.abs(claw.getWristTicks() - clawTicks) <= DEADBAND_CLAW) &&
-        ((clawOpen && claw.isOpen()) || !(clawOpen && !claw.isOpen()))
+        (Math.abs(claw.getWristTicks() - clawTicks) <= DEADBAND_CLAW)
     );
   }
 }

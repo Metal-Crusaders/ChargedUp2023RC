@@ -61,12 +61,12 @@ public class RawTankTeleop extends CommandBase {
 
         double throttle = rightInput.getAsDouble() - leftInput.getAsDouble();
 
-        double rRawPower = (throttle - steering) * speedSensitivity;
-        double lRawPower = (throttle + steering) * speedSensitivity;
+        double rRawPower = (throttle + steering) * speedSensitivity;
+        double lRawPower = (throttle - steering) * speedSensitivity;
 
         if (throttle == 0) {
-            rRawPower = -steering;
-            lRawPower = steering;
+            rRawPower = steering;
+            lRawPower = -steering;
         }
 
         double rightSign = (rRawPower == 0) ? 0 : (rRawPower) / Math.abs(rRawPower);
@@ -75,7 +75,7 @@ public class RawTankTeleop extends CommandBase {
         double rpower = rightSign * Math.pow(rRawPower, speedPower);
         double lpower = leftSign * Math.pow(lRawPower, speedPower);
 
-        driveTrain.set(rpower, lpower);
+        driveTrain.set(lpower, rpower);
 
         SmartDashboard.putNumber("steering", steering);
         SmartDashboard.putNumber("throttle", throttle);

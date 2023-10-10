@@ -14,7 +14,7 @@ public class ElevatorPreset extends CommandBase {
 
   boolean elevatorIntent;
 
-  double ELEVATOR_FULL_POWER = 0.3;
+  double ELEVATOR_FULL_POWER = 0.5;
 
   public ElevatorPreset(Elevator elevator, boolean elevatorIntent) {
     this.elevator = elevator;

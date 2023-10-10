@@ -16,9 +16,12 @@ public class PivotPreset extends CommandBase {
 
   double DEADBAND_PIVOT = 5;
 
+  public double currTicks;
+
   double pivotSpeed;
 
-  double PIVOT_FULL_POWER = 0.3;
+  double PIVOT_UP_FULL_POWER = 0.3;
+  double PIVOT_DOWN_FULL_POWER = 0.1;
 
   public PivotPreset(Pivot pivot, double pivotTicks) {
     this.pivot = pivot;
@@ -29,13 +32,18 @@ public class PivotPreset extends CommandBase {
 
   @Override
   public void initialize() {
+    currTicks = pivot.getEncoderTicks();
   }
 
   @Override
   public void execute() {
 
-    pivotSpeed = (pivotTicks - pivot.getEncoderTicks()) / (Math.abs(pivotTicks - pivot.getEncoderTicks())) * PIVOT_FULL_POWER; // (pivot.getEncoderTicks() - pivotTicks) * kPPivot * 
-
+    pivotSpeed = (pivotTicks - pivot.getEncoderTicks()) / (Math.abs(pivotTicks - pivot.getEncoderTicks())); // (pivot.getEncoderTicks() - pivotTicks) * kPPivot * 
+    if (pivotSpeed > 0) {
+      pivotSpeed *= PIVOT_UP_FULL_POWER;
+    } else {
+      pivotSpeed *= PIVOT_DOWN_FULL_POWER;
+    }
     pivot.set(pivotSpeed);
     // SmartDashboard.putBoolean("second part", (Math.abs(pivot.getEncoderTicks() - pivotTicks) <= DEADBAND_PIVOT));
   }
