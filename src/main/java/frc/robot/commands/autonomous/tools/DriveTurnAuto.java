@@ -57,7 +57,7 @@ public class DriveTurnAuto extends CommandBase {
     public void end(boolean interrupted) {
         driveTrain.set(0);
         try {
-            Thread.sleep(1000);
+            Thread.sleep(10);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

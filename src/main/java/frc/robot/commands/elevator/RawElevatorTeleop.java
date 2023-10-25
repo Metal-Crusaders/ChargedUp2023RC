@@ -8,7 +8,7 @@ import java.util.function.DoubleSupplier;
 
 public class RawElevatorTeleop extends CommandBase {
 
-    public static final double FULL_POWER = 0.75;
+    public static final double FULL_POWER = 0.5;
     public static final double DEADBAND = 0.15;
 
     private Elevator elevator;
@@ -40,12 +40,11 @@ public class RawElevatorTeleop extends CommandBase {
             speed = 0;
         }
 
-        // if (
-        //     (elevator.upperLimitTriggered() && speed >= 0) ||
-        //     (elevator.lowerLimitTriggered() && speed <= 0)
-        // ) {
-        //     speed = 0;
-        // }
+        if (
+            (elevator.upperLimitTriggered() && speed >= 0)
+        ) {
+            speed = 0;
+        }
 
         SmartDashboard.putNumber("Elevator Speed", speed);
         SmartDashboard.putNumber("Elevator encoder ticks", elevator.getEncoderTicks());

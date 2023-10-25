@@ -11,33 +11,19 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Claw extends SubsystemBase {
 
-    DoubleSolenoid piston;
     VictorSP roller1, roller2;
     VictorSP wrist;
     Encoder wristEncoder;
 
     public static final double LOWER_BOUND = -600, UPPER_BOUND = 1e9;
 
-    public static final double SUCK_POWER = 1, SPIT_POWER = 1;
+    public static final double SUCK_POWER = 0.5, SPIT_POWER = 0.9;
 
-    public Claw(DoubleSolenoid piston, VictorSP roller1, VictorSP roller2, VictorSP wrist, Encoder wristEncoder) {
-        this.piston = piston;
+    public Claw(VictorSP roller1, VictorSP roller2, VictorSP wrist, Encoder wristEncoder) {
         this.roller1 = roller1;
         this.roller2 = roller2;
         this.wrist = wrist;
         this.wristEncoder = wristEncoder;
-    }
-
-    public void set(boolean open) {
-        if (open) {
-            piston.set(DoubleSolenoid.Value.kForward);
-        } else {
-            piston.set(DoubleSolenoid.Value.kReverse);
-        }
-    }
-
-    public boolean isOpen() {
-        return (piston.get() == DoubleSolenoid.Value.kForward);
     }
 
     public void setRollers(boolean on, boolean off) {

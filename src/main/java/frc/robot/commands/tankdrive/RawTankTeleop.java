@@ -54,20 +54,19 @@ public class RawTankTeleop extends CommandBase {
     @Override
     public void execute() {
 
-        double steering = Math.pow(steeringInput.getAsDouble(), steeringPower) * speedSensitivity;
+        double steering = Math.pow(steeringInput.getAsDouble(), steeringPower);
         if (steering > -DEADZONE && steering < DEADZONE) {
             steering = 0;
         }
 
+        steering *= 0.7;
+        
         double throttle = rightInput.getAsDouble() - leftInput.getAsDouble();
 
-        double rRawPower = (throttle + steering) * speedSensitivity;
-        double lRawPower = (throttle - steering) * speedSensitivity;
+        throttle *= speedSensitivity;
 
-        if (throttle == 0) {
-            rRawPower = steering;
-            lRawPower = -steering;
-        }
+        double rRawPower = (throttle + steering);
+        double lRawPower = (throttle - steering);
 
         double rightSign = (rRawPower == 0) ? 0 : (rRawPower) / Math.abs(rRawPower);
         double leftSign = (lRawPower == 0) ? 0 : (lRawPower) / Math.abs(lRawPower);

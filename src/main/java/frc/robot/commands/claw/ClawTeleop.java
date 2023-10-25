@@ -12,7 +12,7 @@ import static java.lang.Math.abs;
 public class ClawTeleop extends CommandBase {
 
     Claw claw;
-    BooleanSupplier openBtn, rollerBtn, oppRollerBtn;
+    BooleanSupplier rollerBtn, oppRollerBtn;
     DoubleSupplier wristInput;
 
     double DEADBAND = 0.05;
@@ -20,10 +20,9 @@ public class ClawTeleop extends CommandBase {
 
     private boolean toggleClaw;
 
-    public ClawTeleop(Claw claw, BooleanSupplier openBtn, BooleanSupplier rollerBtn, BooleanSupplier oppRollerBtn, DoubleSupplier wristInput) {
+    public ClawTeleop(Claw claw, BooleanSupplier rollerBtn, BooleanSupplier oppRollerBtn, DoubleSupplier wristInput) {
 
         this.claw = claw;
-        this.openBtn = openBtn;
         this.rollerBtn = rollerBtn;
         this.oppRollerBtn = oppRollerBtn;
         this.wristInput = wristInput;
@@ -42,12 +41,6 @@ public class ClawTeleop extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-
-        if (openBtn.getAsBoolean()) {
-            toggleClaw = !toggleClaw;
-        }
-
-        claw.set(toggleClaw);
 
         claw.setRollers(rollerBtn.getAsBoolean(), oppRollerBtn.getAsBoolean());
 

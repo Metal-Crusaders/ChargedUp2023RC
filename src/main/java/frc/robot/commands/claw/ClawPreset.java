@@ -19,7 +19,7 @@ public class ClawPreset extends CommandBase {
 
   double clawSpeed;
 
-  double WRIST_FULL_POWER = 0.7;
+  double WRIST_FULL_POWER = 0.9;
 
   public ClawPreset(Claw claw, double clawTicks) {
     this.claw = claw;

@@ -8,17 +8,18 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Elevator;
 
 /** An example command that uses an example subsystem. */
-public class ElevatorPreset extends CommandBase {
+public class ElevatorPresetSpecific extends CommandBase {
 
   Elevator elevator;
 
-  boolean elevatorIntent;
+  double encoderTicks;
 
-  double ELEVATOR_FULL_POWER = 0.6;
+  double ELEVATOR_FULL_POWER = 0.3;
+  private double DEADBAND = 100;
 
-  public ElevatorPreset(Elevator elevator, boolean elevatorIntent) {
+  public ElevatorPresetSpecific(Elevator elevator, double encoderTicks) {
     this.elevator = elevator;
-    this.elevatorIntent = elevatorIntent;
+    this.encoderTicks = encoderTicks;
 
     addRequirements(elevator);
   }
@@ -29,11 +30,8 @@ public class ElevatorPreset extends CommandBase {
 
   @Override
   public void execute() {
-    if (elevatorIntent && !(elevator.upperLimitTriggered())) {
-      elevator.set(ELEVATOR_FULL_POWER);
-    } else {
-      elevator.set(-ELEVATOR_FULL_POWER);
-    }
+    double sign = (encoderTicks - elevator.getEncoderTicks()) / Math.abs(encoderTicks - elevator.getEncoderTicks());
+    elevator.set(ELEVATOR_FULL_POWER * sign);
   }
 
   @Override
@@ -44,8 +42,7 @@ public class ElevatorPreset extends CommandBase {
   @Override
   public boolean isFinished() {
     return (
-        (elevatorIntent && elevator.upperLimitTriggered()) ||
-        (!elevatorIntent && elevator.lowerLimitTriggered())
+        (Math.abs(encoderTicks - elevator.getEncoderTicks()) < DEADBAND)
     );
   }
 }

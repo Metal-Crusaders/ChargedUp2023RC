@@ -24,7 +24,7 @@ public class Robot extends TimedRobot {
   private void resetStuff() {
     m_robotContainer.drive.resetEncoders();
     m_robotContainer.drive.getGyro().reset();
-    m_robotContainer.drive.coast();
+    m_robotContainer.drive.brake();
 
     m_robotContainer.pivot.resetEncoder();
 
@@ -133,7 +133,7 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
     
-    m_robotContainer.drive.coast();
+    m_robotContainer.drive.brake();
 
     m_robotContainer.pivot.stop();
     m_robotContainer.elevator.stop();
@@ -158,7 +158,6 @@ public class Robot extends TimedRobot {
   public void testInit() {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
-    m_robotContainer.drive.coast();
   }
 
   /** This function is called periodically during test mode. */

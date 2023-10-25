@@ -20,8 +20,8 @@ public class PivotPreset extends CommandBase {
 
   double pivotSpeed;
 
-  double PIVOT_UP_FULL_POWER = 0.3;
-  double PIVOT_DOWN_FULL_POWER = 0.1;
+  double PIVOT_UP_FULL_POWER = 0.4;
+  double PIVOT_DOWN_FULL_POWER = 0.2;
 
   public PivotPreset(Pivot pivot, double pivotTicks) {
     this.pivot = pivot;

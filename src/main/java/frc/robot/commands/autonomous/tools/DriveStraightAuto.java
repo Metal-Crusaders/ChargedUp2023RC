@@ -24,7 +24,7 @@ public class DriveStraightAuto extends CommandBase {
     double kI = 0;
     double kD = 0;
 
-    public DriveStraightAuto(TankDrive driveTrain, double target) {
+    public DriveStraightAuto(TankDrive driveTrain, double target, double precision) {
         // NOTE: "target" needs to be encoder ticks: to make it inches, uncomment the two lines
         super();
         this.driveTrain = driveTrain;
@@ -34,6 +34,7 @@ public class DriveStraightAuto extends CommandBase {
         this.pidController = new PIDController(kP, kI, kD);
         pidController.setSetpoint(this.target);
         addRequirements(driveTrain);
+        this.PRECISION = precision;
     }
 
     @Override
@@ -41,7 +42,6 @@ public class DriveStraightAuto extends CommandBase {
         driveTrain.resetEncoders();
         pidController.reset();
         error = 0;
-        PRECISION = target / 3;
     }
 
     @Override
@@ -54,13 +54,15 @@ public class DriveStraightAuto extends CommandBase {
         double power = min(1, max(-1, pidController.calculate(current))) * FULL_POWER;
         SmartDashboard.putNumber("speed auto", power);
         driveTrain.set(power);
+        SmartDashboard.putBoolean("IS THE THINGY FINISHED", (Math.abs(error) < PRECISION));
     }
 
     @Override
     public void end(boolean interrupted) {
         driveTrain.set(0);
+        driveTrain.brake();
         try {
-            Thread.sleep(10);
+            Thread.sleep(100);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

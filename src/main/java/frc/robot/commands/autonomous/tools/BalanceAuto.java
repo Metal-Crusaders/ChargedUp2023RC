@@ -10,7 +10,7 @@ public class BalanceAuto extends CommandBase {
 
     private final double deadband = 1;
 
-    private final double FULL_POWER = 0.075;
+    private final double FULL_POWER = 0.1;
 
     private final double kP = (1.0 / 13.5);
 
@@ -27,6 +27,7 @@ public class BalanceAuto extends CommandBase {
     public void initialize() {
         driveTrain.resetEncoders();
         driveTrain.resetGyro();
+        driveTrain.brake();
     }
 
     @Override

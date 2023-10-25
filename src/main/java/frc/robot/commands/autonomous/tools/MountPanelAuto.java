@@ -25,6 +25,7 @@ public class MountPanelAuto extends CommandBase {
     public void initialize() {
         driveTrain.resetEncoders();
         driveTrain.resetGyro();
+        driveTrain.brake();
     }
 
     @Override
